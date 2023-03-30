@@ -1,0 +1,64 @@
+﻿@model List<Domain.Entities.Product>
+@{
+    var products = ViewBag.Products;
+}
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                name
+            </th>
+            <th>
+                الاسم
+            </th>
+            <th>
+                discription
+            </th>
+            <th>
+                الشرح
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Quantity
+            </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in products)
+        {
+            @*<h1>@item.Name</h1>*@
+            <tr>
+
+                <td>
+                    @item.Name
+                   @* @Html.DisplayFor(modelItem => @item.Name)*@
+                </td>
+                <td>
+                    @item.NameAr
+                    @*@Html.DisplayFor(modelItem => @item.NameAr)*@
+                </td>
+                <td>
+                    @item.Description
+                   
+                </td>
+                <td>
+                    @item.DescriptionAr
+                  
+                </td>
+                <td>
+                    @item.Price
+
+                </td>
+                <td>
+                    @item.Quantity
+
+                </td>
+               
+            </tr>
+        }
+    </tbody>
+</table>
