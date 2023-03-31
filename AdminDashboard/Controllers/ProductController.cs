@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Drawing.Drawing2D;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AdminDashboard.Controllers
 {
@@ -61,16 +62,16 @@ namespace AdminDashboard.Controllers
                 Brand brand = _context.Brand.Single(b =>b.Id == collection.BrandId);
                 // var x = collection.ProductColors; 
 
-                string fileNamex = collection.ImagePath.FileName;
+                string fileNameImage = collection.ImagePath.FileName;
 
-                fileNamex = Path.GetFileName(fileNamex);
+                fileNameImage = Path.GetFileName(fileNameImage);
 
-                string uploadpathx = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\testimages", fileNamex);
+                string uploadpathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\testimages", fileNameImage);
 
-                var streamx = new FileStream(uploadpathx, FileMode.Create);
+                var streamoneImage = new FileStream(uploadpathImage, FileMode.Create);
 
-                string path = "wwwroot\\testimages\\" + fileNamex;
-                await collection.ImagePath.CopyToAsync(streamx);
+                string path = "wwwroot\\testimages\\" + fileNameImage;
+                await collection.ImagePath.CopyToAsync(streamoneImage);
                 //ProductImagess.Add(new ProductImage()
                 //{
                 //    ImagePath = path
@@ -86,10 +87,24 @@ namespace AdminDashboard.Controllers
                     foreach (var file in collection.Images)
 
                     {
+                        //var allFilenames = Directory.EnumerateFiles(file.FileName).Select(p => Path.GetFileName(p));
+
+     
+                        //var candidates = allFilenames.Where(fn => Path.GetExtension(fn) == ".txt")
+                        //                             .Select(fn => Path.GetFileNameWithoutExtension(fn));
 
                         string fileName = file.FileName;
 
                         fileName = Path.GetFileName(fileName);
+                        //private string[] permittedExtensions = { ".txt", ".pdf" };
+
+                       //   var ext = Path.GetExtension(uploadedFileName).ToLowerInvariant();
+
+                        //    if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
+                        //  {
+                             // The extension is invalid ... discontinue processing the file
+                        //  }
+
 
                         string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\testimages", fileName);
 
