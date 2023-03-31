@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Views\Order\" />
+    <Folder Include="wwwroot\testimages\" />
   </ItemGroup>
 
 </Project>
