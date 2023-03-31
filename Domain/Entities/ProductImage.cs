@@ -6,7 +6,7 @@
 
         public string ImagePath { get; set; }
 
-        //public long ProductId { get; set; }
+        public long ProductId { get; set; }  //test  was commented
 
         public virtual Product Product { get; set; }
 
