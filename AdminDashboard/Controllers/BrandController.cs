@@ -3,6 +3,7 @@ using Context;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdminDashboard.Controllers
 {
@@ -16,16 +17,15 @@ namespace AdminDashboard.Controllers
             _context = context;
         }
         // GET: BrandController
-        public ActionResult Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            return View();
+            var Brands = _context.Brand.ToList();
+            return View(Brands);
         }
 
-        // GET: BrandController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+       
+      
 
         // GET: BrandController/Create
         public ActionResult Create()
@@ -38,20 +38,33 @@ namespace AdminDashboard.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(BrandModel collection)
         {
+            //!= 
             try
             {
-
-                Brand brand = new Brand()
+                var Brands = _context.Brand.ToList();
+                foreach (var Br in Brands)
                 {
-                    Name = collection.Name,
-                    NameAr = collection.NameAr,
-                  //  Products = collection.Products
-                };
-                _context.Brand.Add(brand);
-                _context.SaveChanges();
+                    if (collection.Name == Br.Name || collection.NameAr == Br.NameAr)
+                    {
+                        return View();
 
-                return Ok();
-               // return View();
+                    }
+                }
+                        Brand brand = new Brand()
+                        {
+                            Name = collection.Name,
+                            NameAr = collection.NameAr,
+                            //  Products = collection.Products
+                        };
+                        _context.Brand.Add(brand);
+                        _context.SaveChanges();
+
+                        return RedirectToAction(nameof(Index));
+                    
+                
+                return View();
+
+
             }
             catch
             {
@@ -62,16 +75,34 @@ namespace AdminDashboard.Controllers
         // GET: BrandController/Edit/5
         public ActionResult Edit(int id)
         {
+            Brand brand = _context.Brand.Single(b => b.Id == id);
+            ViewBag.brand = brand;
             return View();
         }
+        // GET: BrandController/Details/5
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            ViewBag.Title = "Brand Details";
 
+            List<Product> products=new List<Product>(); 
+            products=_context.Product.Where(Product=> Product.Brand.Id == id).ToList();
+           // Brand brand = _context.Brand.Include(b=>b.Products).Single(b => b.Id == id);
+           ViewBag.Products = products;
+            return View();
+        }
         // POST: BrandController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id,BrandModel collection)
         {
             try
             {
+                Brand brand = _context.Brand.Single(b => b.Id ==id);
+                brand.Name = collection.Name;
+                brand.NameAr = collection.NameAr;
+                _context.Brand.Update(brand);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -81,18 +112,25 @@ namespace AdminDashboard.Controllers
         }
 
         // GET: BrandController/Delete/5
+        [HttpGet]
         public ActionResult Delete(int id)
         {
+            Brand brand = _context.Brand.Single(b => b.Id == id);
+            ViewBag.brand = brand;
             return View();
         }
 
         // POST: BrandController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id,BrandModel brandModel)
         {
             try
             {
+                Brand brand = _context.Brand.Single(b => b.Id == id);
+                _context.Brand.Remove(brand);
+                _context.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
