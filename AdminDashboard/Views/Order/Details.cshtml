@@ -1,0 +1,32 @@
+﻿@model Domain.Entities.OrderItems
+
+@{
+    ViewData["Title"] = "Details";
+    var orderitems = ViewBag.orderitems;
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>OrderItemsModel</h4>
+    <hr />
+    <dl class="row">
+        @foreach (var item in orderitems)
+        {
+            <h1>@item.Quantity</h1>
+            <div><img src="@item.Product.ImagePath"/></div>
+            <h2>@item.Product.Name</h2>
+            <h3>@item.Product.Price</h3>
+        }
+    </dl>
+@*</div class = "col-sm-10">
+<div><img src="@orderitems.Product.ImagePath"/></div>
+<h2>@orderitems.Product.Name</h2>
+<h3>@orderitems.Product.Price</h3>
+<div>*@
+
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
