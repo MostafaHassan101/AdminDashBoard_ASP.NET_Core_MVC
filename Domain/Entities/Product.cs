@@ -48,10 +48,8 @@ namespace Domain.Entities
         public virtual ICollection<ProductImage> ProductImages { get; set; }
 
         public virtual ICollection<ProductReview>? ProductReview { get; set; }
-      
-        
-        
-        
+        //public long Id { get; set; }
+
         public bool AddImage(ProductImage image)
         {
             var imageItem = ProductImages.FirstOrDefault(a => a.ImagePath == image.ImagePath);

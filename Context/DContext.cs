@@ -12,11 +12,12 @@ namespace Context
         public DbSet<Category> Category { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderItems> OrderDetails { get; set; }
-        public DbSet<Product> Product { get; set; }
+        public DbSet<Product> Products { get; set; }
         public DbSet<ProductColor> ProductColors { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<WishList> WishList { get; set; }
+        public IEnumerable<object> ProductReview { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

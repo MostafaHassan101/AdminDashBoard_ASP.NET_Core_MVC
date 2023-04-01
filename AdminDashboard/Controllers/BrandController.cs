@@ -86,7 +86,7 @@ namespace AdminDashboard.Controllers
             ViewBag.Title = "Brand Details";
 
             List<Product> products=new List<Product>(); 
-            products=_context.Product.Where(Product=> Product.Brand.Id == id).ToList();
+            products=_context.Products.Where(Product=> Product.Brand.Id == id).ToList();
            // Brand brand = _context.Brand.Include(b=>b.Products).Single(b => b.Id == id);
            ViewBag.Products = products;
             return View();
