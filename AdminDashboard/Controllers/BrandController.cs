@@ -1,8 +1,9 @@
-using AdminDashboard.Models;
+﻿using AdminDashboard.Models;
 using Context;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdminDashboard.Controllers
 {
@@ -11,7 +12,7 @@ namespace AdminDashboard.Controllers
     {
         private readonly DContext _context;
 
-        public BrandController(DContext context)
+        public BrandController(DContext context) 
         {
             _context = context;
         }
@@ -23,8 +24,8 @@ namespace AdminDashboard.Controllers
             return View(Brands);
         }
 
-
-
+       
+      
 
         // GET: BrandController/Create
         public ActionResult Create()
@@ -49,7 +50,6 @@ namespace AdminDashboard.Controllers
 
                     }
                 }
-                
                         Brand brand = new Brand()
                         {
                             Name = collection.Name,
@@ -85,20 +85,20 @@ namespace AdminDashboard.Controllers
         {
             ViewBag.Title = "Brand Details";
 
-            List<Product> products = new List<Product>();
-            products = _context.Product.Where(Product => Product.Brand.Id == id).ToList();
-            // Brand brand = _context.Brand.Include(b=>b.Products).Single(b => b.Id == id);
-            ViewBag.Products = products;
+            List<Product> products=new List<Product>(); 
+            products=_context.Product.Where(Product=> Product.Brand.Id == id).ToList();
+           // Brand brand = _context.Brand.Include(b=>b.Products).Single(b => b.Id == id);
+           ViewBag.Products = products;
             return View();
         }
         // POST: BrandController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, BrandModel collection)
+        public ActionResult Edit(int id,BrandModel collection)
         {
             try
             {
-                Brand brand = _context.Brand.Single(b => b.Id == id);
+                Brand brand = _context.Brand.Single(b => b.Id ==id);
                 brand.Name = collection.Name;
                 brand.NameAr = collection.NameAr;
                 _context.Brand.Update(brand);
@@ -123,7 +123,7 @@ namespace AdminDashboard.Controllers
         // POST: BrandController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, BrandModel brandModel)
+        public ActionResult Delete(int id,BrandModel brandModel)
         {
             try
             {
