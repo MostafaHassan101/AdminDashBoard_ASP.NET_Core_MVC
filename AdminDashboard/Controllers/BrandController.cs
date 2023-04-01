@@ -1,4 +1,4 @@
-﻿using AdminDashboard.Models;
+using AdminDashboard.Models;
 using Context;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -49,19 +49,20 @@ namespace AdminDashboard.Controllers
 
                     }
                 }
-                Brand brand = new Brand()
-                {
-                    Name = collection.Name,
-                    NameAr = collection.NameAr,
-                    //  Products = collection.Products
-                };
-                _context.Brand.Add(brand);
-                _context.SaveChanges();
+                
+                        Brand brand = new Brand()
+                        {
+                            Name = collection.Name,
+                            NameAr = collection.NameAr,
+                            //  Products = collection.Products
+                        };
+                        _context.Brand.Add(brand);
+                        _context.SaveChanges();
 
-                return RedirectToAction(nameof(Index));
-
-
-                //return View();
+                        return RedirectToAction(nameof(Index));
+                    
+                
+               // return View();
 
 
             }
