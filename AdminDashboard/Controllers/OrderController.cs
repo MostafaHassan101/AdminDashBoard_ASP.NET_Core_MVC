@@ -1,19 +1,33 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Context;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdminDashboard.Controllers
 {
     public class OrderController : Controller
+      
     {
+        private readonly DContext _context;
+
+        public OrderController(DContext context)
+        {
+            _context = context;
+        }
         // GET: OrderController
         public ActionResult Index()
         {
-            return View();
+            var orders = _context.Order.Include(o => o.User).Include(o => o.OrderItems).ToList();
+
+            return View(orders);
         }
 
         // GET: OrderController/Details/5
         public ActionResult Details(int id)
         {
+            var orderitems = _context.OrderDetails
+                .Include("Order").Include("Product").Where(o => o.Order.Id == id);
+            ViewBag.orderitems = orderitems;
             return View();
         }
 
