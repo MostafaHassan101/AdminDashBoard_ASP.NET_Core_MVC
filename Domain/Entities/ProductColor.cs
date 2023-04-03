@@ -2,15 +2,15 @@
 {
     public class ProductColor
 	{
-		public long Id { get; protected set; }
+		public long Id { get;  set; }
 
-		//public long ProductId { get; protected set; }
+		//public long ProductId { get;  set; }
 
-		public string Name { get; protected set; }
+		public string Name { get;  set; }
 
-		public string HexValue { get; protected set; }
+		public string HexValue { get;  set; }
 
-		public virtual ICollection<Product> Products { get; protected set; }
+		public virtual ICollection<Product> Products { get;  set; }
 		//public virtual Product Product { get; protected set; }
 	}
 }

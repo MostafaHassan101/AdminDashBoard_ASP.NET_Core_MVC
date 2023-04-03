@@ -20,7 +20,7 @@ namespace AdminDashboard.Controllers
         }
 
         // GET: ProductColorController1/Details/5
-        public ActionResult Details(int id)
+        public ActionResult ProductColorDetails(int id)
         {
             return View();
         }

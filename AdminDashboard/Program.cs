@@ -3,6 +3,7 @@ using Context;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +13,23 @@ builder.Services.AddDbContext<DContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+
+//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddRoles<IdentityRole<long>>()
+//    .AddEntityFrameworkStores<DContext>();
+builder.Services.AddIdentity<User, IdentityRole<long>>()
     .AddEntityFrameworkStores<DContext>();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+
+    options.LoginPath = "/User/SignIn";
+   // options.AccessDeniedPath = "/User/NotAuthorized";
+
+
+});
+
 builder.Services.AddControllersWithViews();
+
 
 var app = builder.Build();
 
@@ -39,7 +54,10 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+  pattern: "{controller=User}/{action=SignIn}/{id?}");
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Home}/{action=Index}/{id?}");
+//app.MapRazorPages();
 
 app.Run();

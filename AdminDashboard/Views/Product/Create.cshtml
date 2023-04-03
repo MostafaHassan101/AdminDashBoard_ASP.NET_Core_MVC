@@ -12,112 +12,174 @@
 
 <h4>ProductModel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NameAr" class="control-label"></label>
-                <input asp-for="NameAr" class="form-control" />
-                <span asp-validation-for="NameAr" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DescriptionAr" class="control-label"></label>
-                <input asp-for="DescriptionAr" class="form-control" />
-                <span asp-validation-for="DescriptionAr" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sizes" class="control-label"></label>
-                <input asp-for="Sizes" class="form-control" />
-                <span asp-validation-for="Sizes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImagePath"></label>
-                <input asp-for="ImagePath" type="file" class="form-control" />
-                <span asp-validation-for="ImagePath"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Discount" class="control-label"></label>
-                <input asp-for="Discount" class="form-control" />
-                <span asp-validation-for="Discount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModelNumber" class="control-label"></label>
-                <input asp-for="ModelNumber" class="form-control" />
-                <span asp-validation-for="ModelNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId">
-                        @foreach (var cat in categories)
-                        {
-                            <option value="@cat.Id">@cat.Name</option>
-                        }
-                    </select>   
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BrandId" class="control-label"></label>
-                <select asp-for="BrandId">
-                    @foreach(var p in brands)
-                    {
-                        <option value="@p.Id">@p.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="BrandId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Images"></label>
-                <input asp-for="Images" multiple type="file"  class="form-control" />
-                <span asp-validation-for="Images"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="ProductColorsidsIds" class="control-label"></label>
-                <select multiple asp-for="ProductColorsidsIds">
-                    @foreach (var pc in ProductColors)
-                    {
-                        <option value="@pc.Id">@pc.Name</option>
-                    }
-                </select>
-                <span asp-validation-for="ProductColorsidsIds" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 @*<div class="form-group">
     <label asp-for="SelectedItems"></label>
     <select asp-for="SelectedItems" asp-items="ViewBag.Items" multiple="multiple" class="form-control"></select>
     <span asp-validation-for="SelectedItems"></span>
 </div>*@
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+
+</head>
+<body class="hold-transition sidebar-mini">
+
+    <div class="content-wrapper">
+
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active">Create Brand</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Create Brand</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form asp-action="Create" enctype="multipart/form-data">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="NameAr" class="control-label"></label>
+                                    <input asp-for="NameAr" class="form-control" />
+                                    <span asp-validation-for="NameAr" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Description" class="control-label"></label>
+                                    <input asp-for="Description" class="form-control" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DescriptionAr" class="control-label"></label>
+                                    <input asp-for="DescriptionAr" class="form-control" />
+                                    <span asp-validation-for="DescriptionAr" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Price" class="control-label"></label>
+                                    <input asp-for="Price" class="form-control" />
+                                    <span asp-validation-for="Price" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Sizes" class="control-label"></label>
+                                    <input asp-for="Sizes" class="form-control" />
+                                    <span asp-validation-for="Sizes" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ImagePath"></label>
+                                    <input asp-for="ImagePath" type="file" class="form-control" />
+                                    <span asp-validation-for="ImagePath"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Discount" class="control-label"></label>
+                                    <input asp-for="Discount" class="form-control" />
+                                    <span asp-validation-for="Discount" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Quantity" class="control-label"></label>
+                                    <input asp-for="Quantity" class="form-control" />
+                                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="ModelNumber" class="control-label"></label>
+                                    <input asp-for="ModelNumber" class="form-control" />
+                                    <span asp-validation-for="ModelNumber" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CategoryId" class="control-label"></label>
+                                    <select asp-for="CategoryId">
+                                        @foreach (var cat in categories)
+                                        {
+                                            <option value="@cat.Id">@cat.Name</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="BrandId" class="control-label"></label>
+                                    <select asp-for="BrandId">
+                                        @foreach (var p in brands)
+                                        {
+                                            <option value="@p.Id">@p.Name</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="BrandId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Images"></label>
+                                    <input asp-for="Images" multiple type="file" class="form-control" />
+                                    <span asp-validation-for="Images"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="ProductColorsidsIds" class="control-label"></label>
+                                    <select multiple asp-for="ProductColorsidsIds">
+                                        @foreach (var pc in ProductColors)
+                                        {
+                                            <option value="@pc.Id">@pc.Name</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProductColorsidsIds" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                            </form>
+                            <div class="card-footer">
+                                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- bs-custom-file-input -->
+    <script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/dist/js/demo.js"></script>
+    <!-- Page specific script -->
+    <script>
+        $(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
+</body>
+</html>
+
+

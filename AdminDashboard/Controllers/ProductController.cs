@@ -32,8 +32,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public ActionResult productColors(int id)
         {
-            var productcolor = _context.ProductColors.Where(p=> p.Id == id);
-            ViewBag.colors = productcolor;
+          //  var colors = _context.ProductColors.ToList();
+            Product product = _context.Product.Include("ProductColors").Single(p=> p.Id == id);
+            ViewBag.colors = product.ProductColors;
             return View();
         }
         
@@ -208,9 +209,7 @@ namespace AdminDashboard.Controllers
 
                         fileName = Path.GetFileName(fileName);
                         string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\ProductImages", fileName);
-
                         var stream = new FileStream(uploadpath, FileMode.Create);
-
                         string pathnew = "wwwroot\\ProductImages\\" + fileName;
                         await file.CopyToAsync(stream);
                         product.AddImage(new ProductImage() { ImagePath = pathnew });
@@ -233,13 +232,9 @@ namespace AdminDashboard.Controllers
                     product.AddColor(new ProductColor() { Name = productColor.Name,HexValue=productColor.HexValue });
                    //product.ProductColors.Add(productColor);
 
-                }
-
-                
-              
+                } 
                 Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
                 Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
-               
                 product.Name = collection.Name;
                 product.NameAr = collection.NameAr;
                 product.Discount = collection.Discount;
