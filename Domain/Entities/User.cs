@@ -5,15 +5,15 @@ namespace Domain.Entities
 {
 	public class User : IdentityUser<long>
 	{
-        public string FirstName { get; protected set; }
+        public string FirstName { get;  set; }
 
-		public string LastName { get; protected set; }
+		public string LastName { get;  set; }
 
-		public string? Address { get; protected set; }
+		public string? Address { get;  set; }
 
-		public string? City { get; protected set; }
+		public string? City { get; set; }
 
-		public string? Phone { get; protected set; }
+		public string? Phone { get; set; }
 
 		public virtual ICollection<Order>? Orders { get; protected set; }
 
