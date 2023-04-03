@@ -1,0 +1,168 @@
+﻿@model Domain.Entities.Product
+@{
+    ViewData["Title"] = "Details Product";
+    var Prd = ViewBag.Product;
+    var Images = ViewBag.ProductImages;
+    var Reviews = ViewBag.ProductReview;
+    var Colorss = ViewBag.ProductColors;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Product Details</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="card card-solid">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <div class="col-12">
+                                <img src="@Prd.ImagePath" class="product-image" style="height: 28em !important;width: 80%;" alt="Product Image">
+                            </div>
+                            <div class="col-12 product-image-thumbs">
+                                @foreach (var item in Images)
+                                {
+                                    <div class="product-image-thumb"><img src="@item.ImagePath" alt="Product Image"></div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <h3 class="my-3"> @Prd.Name </h3>
+                            <p>@Prd.Description </p>
+
+                            <hr>
+                            <h4>Available Colors</h4>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                              @foreach (var iteeem in Colorss)
+                               {
+                                  <label class="btn btn-default text-center active">
+                                   <input type="radio" name="color_option" id="color_option_a1" autocomplete="off" checked>
+                                    @iteeem.Name
+                                  </label>
+                                }
+                            </div>
+                            <h4 class="mt-3">Sizes Product</h4>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-default text-center">
+                                    <input type="radio" name="color_option" id="color_option_b1" autocomplete="off">
+                                    <span style="font-size:larger">@Prd.Sizes</span>
+                                </label>
+                            </div>
+                            <h4 class="mt-3">Quantity Product</h4>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-default text-center">
+                                    <input type="radio" name="color_option" id="color_option_b1" autocomplete="off">
+                                    <span style="font-size:larger">@Prd.Quantity</span>
+                                </label>
+                            </div>
+                            <h4 class="mt-3">ModelNumber Product</h4>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-default text-center">
+                                    <input type="radio" name="color_option" id="color_option_b1" autocomplete="off">
+                                    <span style="font-size:larger">@Prd.ModelNumber</span>
+                                </label>
+                            </div>
+                            <div class="bg-gray py-2 px-3 mt-4">
+                                <h4 class="mb-0">
+                                    @Prd.Price EGP
+                                </h4>
+                                <h6 class="mt-0">
+                                    <small>Ex Tax:  @Prd.Price EGP</small>
+                                    <small style="float:right;">Discount: @Prd.Discount %</small>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <nav class="w-100">
+                            <div class="nav nav-tabs" id="product-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="product-desc-tab" data-toggle="tab" href="#product-desc" role="tab" aria-controls="product-desc" aria-selected="true">Reviews</a>
+                                <a class="nav-item nav-link" id="product-rating-tab" data-toggle="tab" href="#product-rating" role="tab" aria-controls="product-rating" aria-selected="false">Rating</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content p-3" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="product-desc" role="tabpanel" aria-labelledby="product-desc-tab">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Reviews</th>
+                                            <th scope="col">Product</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                          int x = 0;
+                                        @foreach (var iteem in Reviews)
+                                        {
+                                                x++;
+                                                <tr>
+                                                <th scope="row">@x</th>
+                                                <td>@iteem.Review</td>
+                                                <td>@Prd.Name</td>
+                                            </tr>
+								         }
+										}
+                                    </tbody>
+                                </table>
+                            </div>
+							<div class="tab-pane fade" style="display:flex;" id="product-rating" role="tabpanel" aria-labelledby="product-rating-tab">
+                                <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><p style="font-size:larger">(@Prd.Rate)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/dist/js/demo.js"></script>
+    <script src="https://kit.fontawesome.com/26f3c2e8ac.js" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            $('.product-image-thumb').on('click', function () {
+                var $image_element = $(this).find('img')
+                $('.product-image').prop('src', $image_element.attr('src'))
+                $('.product-image-thumb.active').removeClass('active')
+                $(this).addClass('active')
+            })
+        })
+    </script>
+</body>
+</html>

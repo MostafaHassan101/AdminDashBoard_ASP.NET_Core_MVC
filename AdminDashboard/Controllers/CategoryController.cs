@@ -91,9 +91,10 @@ namespace AdminDashboard.Controllers
                 };
                 _context.Category.Add(cat);
                 _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
 
                 //return Ok();
-                return View();
+                //return View();
             }
             catch
             {

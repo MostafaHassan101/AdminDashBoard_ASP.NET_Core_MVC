@@ -1,11 +1,11 @@
-﻿@*@model AdminDashboard.Models.BrandModel*@
-@model Domain.Entities.Brand
+﻿@model Domain.Entities.ProductColor
 @{
-    ViewData["Title"] = "Delete Brand";
+    ViewData["Title"] = "Delete Colors";
 }
 @{
-    var brand = ViewBag.brand;
+    var Colorss = ViewBag.ProductColors;
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,49 +47,51 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header bg-danger">
-                                <h2 class="card-title ">Are you sure you want to delete Brand</h2>
-                            </div>
                             <!-- /.card-header -->
+                            <div class="card-header bg-danger">
+                                <h3>Are you sure you want to delete Color</h3>
+                            </div>
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead class="bg-danger">
                                         <tr>
                                             <th>
-                                                Name Brand
+                                                ID
                                             </th>
-                                             <th>
-                                                NameAr Brand
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                HexValue
                                             </th>
                                             <th>
                                                 Delete
                                             </th>
-       
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                            <tr>
+                                        <tr>
                                             <td>
-                                                <div>
-                                                    <h4>@brand.Name</h4>
-                                                </div>
+                                                <h4>@Colorss.Id</h4>
                                             </td>
                                             <td>
-                                                <div>
-                                                    <h4>@brand.NameAr</h4>
-                                                </div>
+                                                <h4>@Colorss.Name</h4>
+                                            </td>
+                                            <td>
+                                                <h4>@Colorss.HexValue</h4>
                                             </td>
                                             <td>
                                                 <form asp-action="Delete">
                                                     <input type="submit" value="Delete" class="btn btn-danger" />
                                                 </form>
                                             </td>
-                                            </tr>                                     
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="card-footer">
-                                <a asp-controller="Brand" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                                <a asp-controller="ProductColor" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -103,7 +105,7 @@
         </section>
         <!-- /.content -->
 
-</div>
+    </div>
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->

@@ -1,4 +1,6 @@
-﻿using Context;
+﻿using AdminDashboard.Models;
+using Context;
+using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,11 +21,6 @@ namespace AdminDashboard.Controllers
             return View(colors);
         }
 
-        // GET: ProductColorController1/Details/5
-        public ActionResult ProductColorDetails(int id)
-        {
-            return View();
-        }
 
         // GET: ProductColorController1/Create
         public ActionResult Create()
@@ -34,10 +31,26 @@ namespace AdminDashboard.Controllers
         // POST: ProductColorController1/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ProductColor collection)
         {
             try
             {
+                var Color = _context.ProductColors.ToList();
+                foreach (var Br in Color)
+                {
+                    if (collection.Name == Br.Name || collection.HexValue == Br.HexValue)
+                    {
+                        return View();
+
+                    }
+                }
+                ProductColor colorr = new ProductColor()
+                {
+                    Name = collection.HexValue,
+                    HexValue = collection.HexValue,
+                };
+                _context.ProductColors.Add(colorr);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -46,40 +59,26 @@ namespace AdminDashboard.Controllers
             }
         }
 
-        // GET: ProductColorController1/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ProductColorController1/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
 
         // GET: ProductColorController1/Delete/5
         public ActionResult Delete(int id)
         {
+            ProductColor productColor1 = _context.ProductColors.Single(b => b.Id == id);
+            ViewBag.ProductColors = productColor1;
             return View();
         }
 
         // POST: ProductColorController1/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, ProductColor productColor)
         {
             try
             {
+                ProductColor productColor2 = _context.ProductColors.Single(b => b.Id == id);
+                _context.ProductColors.Remove(productColor2);
+                _context.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
             catch
