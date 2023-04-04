@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
     <head>
     <title>Noon @ViewData["Title"] </title>
@@ -26,15 +27,11 @@
   <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.min.css">
     </head>
     <body>
-
-
     <div class="wrapper">
-
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake" src="~/Icon.ico" alt="AdminLTELogo" height="60" width="60">
         </div>
-
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -70,7 +67,6 @@
                         </form>
                     </div>
                 </li>
-
                 <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
@@ -135,16 +131,14 @@
                         <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
                     </div>
                 </li>
-
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
+                        <i class="fas fa-users mr-2"></i>Name User
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
+                        <span class="dropdown-item dropdown-header">Account User</span>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
                             <i class="fas fa-envelope mr-2"></i> 4 new messages
@@ -152,38 +146,30 @@
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
+                            <i class="fa-solid fa-gears"></i> Settings
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
+                        <a  class="dropdown-item" asp-controller="User" asp-action="SignOut">
+                            <i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Log Out
                         </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
 
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
-
             </ul>
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
             <!-- Brand Logo -->
             <a asp-controller="Home" asp-action="Index" class="brand-link">
                 <img src="~/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -195,10 +181,10 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="~/iconface.jpg" class="img-circle elevation-2" alt="User Image">
+                        <img src="~/images.png" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Makaruos</a>
+                        <a class="d-block">Makaruos</a>
                     </div>
                 </div>
 
@@ -217,10 +203,8 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                             with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open " >
-                            <a href="#" class="nav-link active">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link ">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -229,7 +213,7 @@
                             </a>
                             <ul class="nav nav-treeview" >
                                 <li class="nav-item " style="padding-left: 1rem !important;">
-                                    <a asp-controller="Home" asp-action="Index" class="nav-link " >
+                                    <a asp-controller="Home" asp-action="Index"  class="nav-link" >
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Dashboard v1</p>
                                     </a>
@@ -248,8 +232,76 @@
                                 </li>
                             </ul>
                         </li>
-
-
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-edit"></i>
+                                <p>
+                                    Forms
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item " style="padding-left: 1rem !important;">
+                                    <a asp-controller="Order" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Order Form</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item " style="padding-left: 1rem !important;">
+                                    <a asp-controller="Brand" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Brand Form</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item " style="padding-left: 1rem !important;">
+                                    <a asp-controller="Category" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Category Form</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item " style="padding-left: 1rem !important;">
+                                    <a asp-controller="Product" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Product Form</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item " style="padding-left: 1rem !important;">
+                                    <a asp-controller="ProductColor" asp-action="Index" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>ProductColor Form</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="padding-left: 1rem !important;">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            DashBorad Form
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item " style="padding-left: 1rem !important;">
+                                            <a asp-controller="Home" asp-action="General_Elements" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>General Elements</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item " style="padding-left: 1rem !important;">
+                                            <a asp-controller="Home" asp-action="Advanced_Elements" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Advanced Elements</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item " style="padding-left: 1rem !important;">
+                                            <a asp-controller="Home" asp-action="Validation" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Validation</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
@@ -273,83 +325,6 @@
                                 </li>
                             </ul>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    Forms
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-
-                                <li class="nav-item " style="padding-left: 1rem !important;">
-                                    <a asp-controller="Brand" asp-action="Index" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Brand Form</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item " style="padding-left: 1rem !important;">
-                                    <a class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Product Form</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item " style="padding-left: 1rem !important;">
-                                    <a asp-controller="Category" asp-action="Index" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Category Form</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item " style="padding-left: 1rem !important;">
-                                    <a class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>User Form</p>
-                                    </a>
-                                </li>
-
-                                <li class="nav-item" style="padding-left: 1rem !important;">
-                                    <ul class="nav nav-treeview">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>
-                                                    DashBorad Form
-                                                    <i class="fas fa-angle-left right"></i>
-                                                </p>
-                                            </a>
-                                            <ul class="nav nav-treeview">
-                                                <li class="nav-item ">
-                                                    <a asp-controller="Home" asp-action="General_Elements" class="nav-link">
-                                                        <i class="far fa-circle nav-icon"></i>
-                                                        <p>General Elements</p>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item ">
-                                                    <a asp-controller="Home" asp-action="Advanced_Elements" class="nav-link">
-                                                        <i class="far fa-circle nav-icon"></i>
-                                                        <p>Advanced Elements</p>
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item ">
-                                                    <a asp-controller="Home" asp-action="Validation" class="nav-link">
-                                                        <i class="far fa-circle nav-icon"></i>
-                                                        <p>Validation</p>
-                                                    </a>
-                                                </li>
-
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
-
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-table"></i>
@@ -373,19 +348,7 @@
                                 </li>
                             </ul>
                         </li>
-
                         <li class="nav-header">EXAMPLES</li>
-
-                        <li class="nav-item">
-                            <a asp-controller="Home" asp-action="Calendar" class="nav-link">
-                                <i class="nav-icon far fa-calendar-alt"></i>
-                                <p>
-                                    Calendar
-                                    <span class="badge badge-info right">2</span>
-                                </p>
-                            </a>
-                        </li>
-
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon far fa-envelope"></i>
@@ -415,64 +378,15 @@
                                 </li>
                             </ul>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>
-                                    Pages
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item" style="padding-left: 1rem !important;">
-                                    <a asp-controller="Home" asp-action="Invoice" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Invoice</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="padding-left: 1rem !important;">
-                                    <a asp-controller="Home" asp-action="Profile" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Profile</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="padding-left: 1rem !important;">
-                                    <a asp-controller="Home" asp-action="E_commerce" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>E-commerce</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="padding-left: 1rem !important;">
-                                    <a asp-controller="Home" asp-action="Project_Add" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Project Add</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="padding-left: 1rem !important;">
-                                    <a asp-controller="Home" asp-action="Project_Edit" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Project Edit</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="padding-left: 1rem !important;">
-                                    <a asp-controller="Home" asp-action="Contact_us" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Contact us</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon far fa-plus-square"></i>
                                 <p>
-                                    Extras
+                                    Registeration
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
-                            
+
                             <ul class="nav nav-treeview">
                                 <li class="nav-item" style="padding-left: 1rem !important;">
                                     <a href="#" class="nav-link">
@@ -530,7 +444,62 @@
                                 </li>
                             </ul>
                         </li>
-
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Calendar" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Calendar
+                                    <span class="badge badge-info right">2</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Pages
+                                    <i class="fas fa-angle-left right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item" style="padding-left: 1rem !important;">
+                                    <a asp-controller="Home" asp-action="Invoice" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Invoice</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="padding-left: 1rem !important;">
+                                    <a asp-controller="Home" asp-action="Profile" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Profile</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="padding-left: 1rem !important;">
+                                    <a asp-controller="Home" asp-action="E_commerce" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>E-commerce</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="padding-left: 1rem !important;">
+                                    <a asp-controller="Home" asp-action="Project_Add" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Project Add</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="padding-left: 1rem !important;">
+                                    <a asp-controller="Home" asp-action="Project_Edit" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Project Edit</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="padding-left: 1rem !important;">
+                                    <a asp-controller="Home" asp-action="Contact_us" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Contact us</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-search"></i>
@@ -554,19 +523,15 @@
                                 </li>
                             </ul>
                         </li>
-
                     </ul>
                 </nav>
-                <!-- /.sidebar-menu -->
             </div>
-            <!-- /.sidebar -->
         </aside>
 
         @*Page View*@
         @RenderBody()
 
 
-        <!-- /.content-wrapper -->
         <footer class="main-footer">
             <strong>© 2023 noon. All Rights Reserved .</strong>
             <div class="float-right d-none d-sm-inline-block">
@@ -574,16 +539,12 @@
             </div>
         </footer>
 
-        <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
         </aside>
-        <!-- /.control-sidebar -->
     </div>
-        <!-- jQuery -->
 
 
-
+    <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -617,10 +578,16 @@
     <script src="~/dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="~/dist/js/pages/dashboard.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://kit.fontawesome.com/26f3c2e8ac.js" crossorigin="anonymous"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+        <script>
+           $(".nav-link").click(function() {
+           $(".nav-link").removeClass("active");
+           $(this).addClass("active");
+            });
+        </script>
+
     </body>
-
-
 </html>
 
 

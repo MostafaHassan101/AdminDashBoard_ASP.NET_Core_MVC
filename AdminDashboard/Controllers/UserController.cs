@@ -7,19 +7,20 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace AdminDashboard.Controllers
 {
 
-   // [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     //[Authorize]
     public class UserController : Controller
     {
         private readonly DContext context;
         UserManager<User> usermanager;
         SignInManager<User> SignInManager;
-       // RoleManager<IdentityRole> RoleManager;
+        //RoleManager<IdentityRole> RoleManager;
         public UserController(DContext _context, UserManager<User> _usermanager, SignInManager<User> signInManager)
         {
             usermanager= _usermanager;
@@ -27,8 +28,15 @@ namespace AdminDashboard.Controllers
             SignInManager = signInManager;
             
         }
+
+        // GET: UserController/Create Account
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
         [HttpGet]
-    //    
         public IActionResult SignUp()
         {
            
@@ -65,7 +73,7 @@ namespace AdminDashboard.Controllers
                 }
                 else
                 {
-                    IdentityResult result2=await usermanager.AddToRoleAsync(user,"TEST");
+                    IdentityResult result2=await usermanager.AddToRoleAsync(user,"Admin");
 
                     if (result2.Succeeded == false)
                     {
@@ -81,16 +89,18 @@ namespace AdminDashboard.Controllers
                 }
             }
         }
-        // GET: UserController
-        public ActionResult Index()
-        {
-            return View();
-        }
+
+
+
+
+
+
+
 
         // GET: UserController/Details/5
         //   [Authorize]
         // [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task< ActionResult> UsersDetails()
         {
@@ -111,11 +121,11 @@ namespace AdminDashboard.Controllers
             return View();
         }
 
-        // GET: UserController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+
+
+
+        // UserController/Login
+
         [AllowAnonymous]
         [HttpGet]
         public IActionResult SignIn()
@@ -159,6 +169,10 @@ namespace AdminDashboard.Controllers
                 
         }
 
+
+
+
+        // UserController/ Log out
         [HttpGet]
         public  async Task<IActionResult> SignOut()
         {
@@ -167,16 +181,18 @@ namespace AdminDashboard.Controllers
             return RedirectToAction("SignIn");
 
         }
-        // POST: UserController/Create
+
+
+
     
 
-        // GET: UserController/Edit/5
+        //  UserController/Edit
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: UserController/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -191,7 +207,11 @@ namespace AdminDashboard.Controllers
             }
         }
 
-        // GET: UserController/Delete/5
+
+
+
+
+        // UserController/Delete
         public async Task<ActionResult> Delete(long id)
         {
             var user = await usermanager.FindByIdAsync(id.ToString());
@@ -215,7 +235,29 @@ namespace AdminDashboard.Controllers
             return RedirectToAction(nameof(UsersDetails));
         }
 
-        // POST: UserController/Delete/5
-      
+
+
+
+
+
+        // All Reviews & All Users
+
+        [HttpGet]
+        public IActionResult AllReviews()
+        {
+            var ProductReviews = context.ProductReviews.Include("Product").ToList();
+            ViewBag.ProductReviews = ProductReviews;
+
+            return View(ProductReviews);
+        }
+
+        [HttpGet]
+        public IActionResult AllUsers()
+        {
+            var Users = context.Users.ToList();
+            ViewBag.Users = Users;
+
+            return View(Users);
+        }
     }
 }

@@ -17,9 +17,6 @@ namespace AdminDashboard.Models
         public string? Sizes { get; set; }
 
         public IFormFile ImagePath { get; set; }
-
-       // public byte Rate { get; set; }
-
         public byte? Discount { get; set; }
 
         public int Quantity { get; set; }
@@ -29,13 +26,9 @@ namespace AdminDashboard.Models
         public long CategoryId { get; set; }
 
         public long? BrandId { get; set; }
-
-      
+  
         public List<IFormFile>Images { get; set; }
         public virtual ICollection<long> ProductColorsidsIds { get; set; }
-      //  public virtual ICollection<string> ProductImages { get; set; }
-
-        //  public virtual ICollection<ProductImage> ProductImages { get; set; }
 
     }
 }

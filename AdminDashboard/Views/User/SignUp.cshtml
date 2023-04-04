@@ -1,63 +1,174 @@
 ﻿@model AdminDashboard.Models.UserCreateModel
-
 @{
-    ViewData["Title"] = "SignUp";
+    ViewData["Title"] = "SignUp Noon";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Noon Register</title>
+    <link href="~/Icon.ico" rel="icon">
 
-<h1>SignUp</h1>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <style>
+        .divs {
+            background: url(https://images.wallpaperscraft.com/image/single/black_light_dark_73356_1920x1080.jpg);
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
 
-<h4>UserCreateModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SignUp">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+        .sgin {
+            font-family: 'Courier New', Courier, monospace;
+            background: url('https://media.giphy.com/media/FE0WTM8BG754I/giphy.gif') center center no-repeat;
+            background-size: auto;
+            background-clip: border-box;
+            -webkit-background-clip: text;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            background-size: cover;
+            margin: -10px;
+            color: transparent;
+            font-size: larger;
+        }        
+    </style>
+</head>
+<body class="divs hold-transition register-page">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="register-box">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+				<img src="~/Icon.ico" style="width:40px;height:40px;" /><br />
+                <b class ="sgin">Create Admin Account</b>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+            <div class="card-body">
+                <form asp-action="SignUp" >
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="input-group mb-3">
+                        <input asp-for="FirstName" class="form-control" placeholder="Enter Your FirstName" type="text" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px">
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div><br />
+                    <div class="input-group mb-3">
+                        <input asp-for="LastName" class="form-control" placeholder="Enter Your LastName" type="text" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px">
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div><br />
+                    <div class="input-group mb-3">
+                        <input asp-for="UserName" class="form-control" placeholder="User Name" type="text" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px">
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div><br />
+                    <div class="input-group mb-3">
+                        <input asp-for="Email" class="form-control" placeholder="Email" type="email" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div><br />
+                    <div class="input-group mb-3">
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div><br />
+                    <div class="input-group mb-3">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="ConfirmPassword" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px">
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div><br />
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                                <label for="agreeTerms">
+                                    I agree to the <a href="#">terms</a>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <input type="submit" value="Create" class="btn btn-primary btn-block" style="width:100%" />
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+                @section Scripts {
+                    @{
+                        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                    }
+                }
+                <div class="social-auth-links text-center">
+                    <a href="#" class="btn btn-block btn-danger">
+                        <i class="fab fa-google-plus mr-2"></i>
+                        Sign up using Google+
+                    </a>
+                </div>
+                <a asp-controller="User" asp-action="SignIn" class="text-center">I already have a membership</a>
             </div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="control-label"></label>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-          @*  <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <input asp-for="Role" class="form-control" />
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+            <!-- /.form-box -->
+        </div><!-- /.card -->
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <!-- /.register-box -->
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+</body>
+</html>

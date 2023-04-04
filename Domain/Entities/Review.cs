@@ -1,8 +1,7 @@
 ﻿namespace Domain.Entities
 {
     public class ProductReview
-    {
-        
+    {      
         public long Id { get; set; }
         
         public string Review { get; set; }

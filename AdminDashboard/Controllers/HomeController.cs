@@ -1,5 +1,8 @@
 ﻿using AdminDashboard.Models;
+using Context;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace AdminDashboard.Controllers
@@ -8,13 +11,39 @@ namespace AdminDashboard.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DContext _context;
+
+        public HomeController(ILogger<HomeController> logger, DContext context)
         {
             _logger = logger;
+            _context = context;
+
         }
 
+        //public IActionResult _Layout()
+        //{
+        //    return View();
+        //}
         public IActionResult Index()
         {
+            var User = _context.Users.Count();
+            ViewBag.Users = User;
+
+            var Orders = _context.Order.Count();
+            ViewBag.Order = Orders;
+
+            var Categorys = _context.Category.Count();
+            ViewBag.Category = Categorys;
+
+            var Brands = _context.Brand.Count();
+            ViewBag.Brand = Brands;
+
+            var Product = _context.Product.Count();
+            ViewBag.Product = Product;
+
+            var ProductReviews = _context.ProductReviews.Count();
+            ViewBag.ProductReviews = ProductReviews;
+
             return View();
         }
         public IActionResult Dashboard2()

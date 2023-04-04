@@ -1,32 +1,119 @@
 ﻿@model Domain.Entities.OrderItems
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Order Details";
     var orderitems = ViewBag.orderitems;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<h1>Details</h1>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
 
-<div>
-    <h4>OrderItemsModel</h4>
-    <hr />
-    <dl class="row">
-        @foreach (var item in orderitems)
-        {
-            <h1>@item.Quantity</h1>
-            <div><img src="@item.Product.ImagePath"/></div>
-            <h2>@item.Product.Name</h2>
-            <h3>@item.Product.Price</h3>
-        }
-    </dl>
-@*</div class = "col-sm-10">
-<div><img src="@orderitems.Product.ImagePath"/></div>
-<h2>@orderitems.Product.Name</h2>
-<h3>@orderitems.Product.Price</h3>
-<div>*@
-
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active">Order Details</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Order Details</h3>
+                            </div>
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th> Name </th>
+                                            <th> ImagePath </th>
+                                            <th> Price </th>
+                                            <th> Quantity </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in orderitems)
+                                         {
+                                         <tr>
+                                            <td>@item.Product.Name</td>
+                                            <td><img src="@item.Product.ImagePath" width="100" height="100" /></td>
+                                            <td>@item.Product.Price</td>
+                                            <td>@item.Quantity</td>
+                                        </tr>
+                                         }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="Order" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/jszip/jszip.min.js"></script>
+    <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/dist/js/demo.js"></script>
+    <!-- Page specific script -->
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+</body>
+</html>

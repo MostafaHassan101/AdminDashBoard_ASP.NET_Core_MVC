@@ -1,46 +1,106 @@
 ﻿@model AdminDashboard.Models.LoginModel
-
-@{
-    ViewData["Title"] = "SignIn";
-   // var url = ViewBag.ReturnUrl;
+@{   
+    ViewData["Title"] = "SignIn Noon";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SignIn Noon DashBorad</title>
+    <link href="~/Icon.ico" rel="icon">
 
-<h1>SignIn</h1>
-
-<h4>LoginModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SignIn">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <style>
+.divs{
+  background: url(https://images.wallpaperscraft.com/image/single/black_light_dark_73356_1920x1080.jpg);
+  width:100%;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+.sgin{
+  font-family: 'Courier New', Courier, monospace;
+  background:url('https://media.giphy.com/media/FE0WTM8BG754I/giphy.gif') center center no-repeat;
+  -webkit-background-clip: text;
+  font-size:4rem;
+  letter-spacing:10px;
+  background-size:cover;
+  margin:0px;
+  color:transparent;
+}
+    </style>
+</head>
+<body class="divs hold-transition login-page" >
+	<h1 class="sgin"><b>Sgin In Noon</b></h1>
+    <div class="login-box">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <h1 class="text-warning"><img src="~/Icon.ico" style="width:40px;height:40px;"/> Noon</h1>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="card-body">
+                <form asp-action="SignIn">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class=" mb-4 input-group">
+                        <input asp-for="UserName" class="form-control" placeholder="Enter your Email"  />
+                         <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px">
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div><br />
+                    <div class=" mb-4 input-group">
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter Your Password" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:4px">
+                      <span asp-validation-for="Password" class="text-danger"></span>
+                    </div><br />
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="form-check icheck-primary">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="RememberMe" /><b>@Html.DisplayNameFor(model => model.RememberMe)</b>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4" >
+                            <input type="submit" value="Sign In" class="btn btn-primary" style="width: 100%;" />
+                        </div>
+                    </div>
+                </form>
+                <br />
+                <div class="social-auth-links text-center mt-2 mb-3">
+                    <a href="#" class="btn btn-block btn-danger">
+                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+                    </a>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
-                </label>
-            </div>
-       @*     <div class="form-group">
-                <label asp-for="ReturnUrl" class="control-label"></label>
-                <input asp-for="ReturnUrl" hidden value="url" class="form-control" />
-                <span asp-validation-for="ReturnUrl" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <input type="submit" value="sign in" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+</body>
+</html>
 

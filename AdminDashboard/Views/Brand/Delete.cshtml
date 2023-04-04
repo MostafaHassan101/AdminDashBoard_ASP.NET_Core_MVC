@@ -2,10 +2,9 @@
 @model Domain.Entities.Brand
 @{
     ViewData["Title"] = "Delete Brand";
-}
-@{
     var brand = ViewBag.brand;
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,8 +25,6 @@
 <body class="hold-transition sidebar-mini">
 
     <div class="content-wrapper">
-
-        <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -38,32 +35,30 @@
                         </ol>
                     </div>
                 </div>
-            </div><!-- /.container-fluid -->
+            </div>
         </section>
-
-        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <!-- /.card-header -->
+                            <div class="card-header bg-danger">
+                                <h2 class="card-title ">Are you sure you want to delete Brand</h2>
+                            </div>
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead class="bg-danger">
                                         <tr>
                                             <th>
-                                                <h3>Are you sure you want to delete Brand</h3>
+                                                Name Brand
                                             </th>
                                              <th>
-                                                <h3></h3>
+                                                NameAr Brand
                                             </th>
                                             <th>
-                                                <h3></h3>
+                                                Delete
                                             </th>
-                                            <th>
-                                                <h3></h3>
-                                            </th>
+       
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -83,25 +78,18 @@
                                                     <input type="submit" value="Delete" class="btn btn-danger" />
                                                 </form>
                                             </td>
-                                            <td>
-                                                <a asp-controller="Brand" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
-                                            </td>
                                             </tr>                                     
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <a asp-controller="Brand" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                            </div>
                         </div>
-                        <!-- /.card -->
                     </div>
-                    <!-- /.col -->
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- /.container-fluid -->
         </section>
-        <!-- /.content -->
-
 </div>
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>

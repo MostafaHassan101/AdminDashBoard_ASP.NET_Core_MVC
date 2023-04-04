@@ -29,13 +29,9 @@ namespace Domain.Entities
 
         public string ModelNumber { get; set; }
 
-        //public long CategoryId { get; set; }
-
         public virtual Brand? Brand { get; set; }
 
         public virtual Category Category { get; set; }
-
-        //public virtual ICollection<Order> Orders { get; set; }  //////////////
         public virtual OrderItems? OrderItems { get; set; }
 
         public virtual WishList? WishList { get; set; }
@@ -48,14 +44,10 @@ namespace Domain.Entities
         public virtual ICollection<ProductImage> ProductImages { get; set; }
 
         public virtual ICollection<ProductReview>? ProductReview { get; set; }
-      
-        
-        
-        
+           
         public bool AddImage(ProductImage image)
         {
             var imageItem = ProductImages.FirstOrDefault(a => a.ImagePath == image.ImagePath);
-
             if (imageItem == null)
             {
                 ProductImages.Add(image);
@@ -69,8 +61,7 @@ namespace Domain.Entities
 
         public bool AddColor(ProductColor color)
         {
-            var coloritem = ProductColors.FirstOrDefault(a => a.Name == color.Name);
-
+            var coloritem = ProductColors.Single(a => a.Id == color.Id);
             if (coloritem == null)
             {
                 ProductColors.Add(color);
@@ -80,8 +71,6 @@ namespace Domain.Entities
             {
                 return false;
             }
-
-
         }
 
         public void AddReview(ProductReview review)

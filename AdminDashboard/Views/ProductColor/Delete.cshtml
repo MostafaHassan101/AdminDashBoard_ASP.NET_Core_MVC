@@ -1,9 +1,11 @@
-﻿@using Domain.Entities;
-@model IEnumerable<Domain.Entities.Category>
-
+﻿@model Domain.Entities.ProductColor
 @{
-    ViewData["Title"] = "Index Category";
+    ViewData["Title"] = "Delete Colors";
 }
+@{
+    var Colorss = ViewBag.ProductColors;
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +24,7 @@
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
+
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -29,7 +32,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="breadcrumb-item active">DataTables Category</li>
+                            <li class="breadcrumb-item active">Delete Brand</li>
                         </ol>
                     </div>
                 </div>
@@ -40,63 +43,57 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">DataTables Category</h3>
+                            <div class="card-header bg-danger">
+                                <h3>Are you sure you want to delete Color</h3>
                             </div>
                             <div class="card-body">
-                                <p>
-                                    <a asp-controller="Category" asp-action="Create" class="btn btn-success">Create New</a>
-                                </p>
                                 <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
+                                    <thead class="bg-danger">
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Id)
+                                                ID
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Name)
+                                                Name
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.NameAr)
+                                                HexValue
                                             </th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
+                                            <th>
+                                                Delete
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Id)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.NameAr)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
-                                                </td>
-                                                <td>
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a>
-                                                </td>
-                                                <td>
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
-                                                </td>
-                                            </tr>
-                                        }
+                                        <tr>
+                                            <td>
+                                                <h4>@Colorss.Id</h4>
+                                            </td>
+                                            <td>
+                                                <h4>@Colorss.Name</h4>
+                                            </td>
+                                            <td>
+                                                <h4>@Colorss.HexValue</h4>
+                                            </td>
+                                            <td>
+                                                <form asp-action="Delete">
+                                                    <input type="submit" value="Delete" class="btn btn-danger" />
+                                                </form>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="ProductColor" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        </div>
+
+    </div>
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->

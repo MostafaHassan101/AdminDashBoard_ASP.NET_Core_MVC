@@ -1,10 +1,8 @@
-﻿@model AdminDashboard.Models.BrandModel
-@*@model Domain.Entities.Brand*@
-@{
-    var brand = ViewBag.brand;
-}
+﻿@*@model AdminDashboard.Models.BrandModel*@
+@model Domain.Entities.Brand
 @{
     ViewData["Title"] = "Edit Brand";
+    var brand = ViewBag.brand;
 }
 
 <!DOCTYPE html>
@@ -22,9 +20,7 @@
 </head>
 <body class="hold-transition sidebar-mini">
 
-    <div class="content-wrapper">
-
-    <!-- Content Header (Page header) -->
+ <div class="content-wrapper">
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -35,7 +31,7 @@
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
     <section class="content">
       <div class="container-fluid">
@@ -45,9 +41,7 @@
               <div class="card-header">
                 <h3 class="card-title">Edit Brand</h3>
               </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-                            <form asp-action="Edit">
+              <form asp-action="Edit">
                 <div class="card-body">
                   <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                   <div class="form-group">
@@ -77,7 +71,6 @@
       </div>
     </section>
 </div>
-
 
 <!-- jQuery -->
 <script src="~/plugins/jquery/jquery.min.js"></script>
