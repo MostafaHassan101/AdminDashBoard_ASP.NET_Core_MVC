@@ -1,13 +1,14 @@
-﻿@model Domain.Entities.Category
-
+﻿@model AdminDashboard.Models.CategoryModel
 @{
-    ViewData["Title"] = "Create Category";
+    ViewData["Title"] = "Add SubCategory";
+    var parentcat = ViewBag.parentCategory;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -16,15 +17,14 @@
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
-
-        <div class="content-wrapper">
+    <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="breadcrumb-item active">Create Category</li>
+                            <li class="breadcrumb-item active">Create SubCategory</li>
                         </ol>
                     </div>
                 </div>
@@ -36,25 +36,31 @@
                     <div class="col-md-12">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Create Category</h3>
+                                <h3 class="card-title">AddSubCategory</h3>
                             </div>
-                            <form asp-action="Create">
-                                <div class="card-body">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                    <div class="form-group">
-                                        <label asp-for="Name" class="control-label"></label>
-                                        <input asp-for="Name" class="form-control" />
-                                        <span asp-validation-for="Name" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="NameAr" class="control-label"></label>
-                                        <input asp-for="NameAr" class="form-control" />
-                                        <span asp-validation-for="NameAr" class="text-danger"></span>
-                                    </div>
+                            <form asp-action="AddSubCategory">
+                              <div class="card-body">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                        <label asp-for="Name" class="control-label" for="exampleInputName">Name SubCategory</label>
+                                        <input asp-for="Name" required type="text" class="form-control" id="exampleInputName" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Create</button>
+                                <div class="form-group">
+                                        <label asp-for="NameAr" class="control-label" for="exampleInputNameAR">NameAr SubCategory</label>
+                                        <input asp-for="NameAr" required type="text" class="form-control" id="exampleInputNameAr" />
+                                    <span asp-validation-for="NameAr" class="text-danger"></span>
                                 </div>
+                                <div class="form-group">
+                                        <label asp-for="parentId" class="control-label">Name Category</label>
+                                    <select asp-for="parentId" class="form-control" style="width:100% !important;" id="exampleInputNameAr">
+                                        <option value="@parentcat.Id" selected>@parentcat.Name</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                </div>
+                              </div>
                             </form>
                             <div class="card-footer">
                                 <a asp-controller="Category" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
@@ -67,7 +73,8 @@
                 </div>
             </div>
         </section>
-        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->

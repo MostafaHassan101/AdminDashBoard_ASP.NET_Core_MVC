@@ -8,8 +8,6 @@ namespace Domain.Entities
 
 		public string Address { set; get; }
 
-		//public string AddressAr { set; get; }
-
 		public decimal TotalPrice { get; set; }
 
         public int? Discount { get; set; }

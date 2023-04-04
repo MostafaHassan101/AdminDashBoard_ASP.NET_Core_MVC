@@ -1,8 +1,7 @@
-﻿@using Domain.Entities;
-@model IEnumerable<Domain.Entities.Category>
-
+﻿@model IEnumerable<Domain.Entities.ProductReview>
 @{
-    ViewData["Title"] = "Index Category";
+    ViewData["Title"] = "All Reviews Products";
+    var Reviews = ViewBag.ProductReviews;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +21,7 @@
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
+
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -29,7 +29,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="breadcrumb-item active">DataTables Category</li>
+                            <li class="breadcrumb-item active">All Reviews Products</li>
                         </ol>
                     </div>
                 </div>
@@ -41,52 +41,29 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">DataTables Category</h3>
+                                <h3 class="card-title">All Reviews Products</h3>
                             </div>
                             <div class="card-body">
-                                <p>
-                                    <a asp-controller="Category" asp-action="Create" class="btn btn-success">Create New</a>
-                                </p>
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Id)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Name)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.NameAr)
-                                            </th>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Reviews</th>
+                                            <th scope="col">Product</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Id)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.NameAr)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
-                                                </td>
-                                                <td>
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a>
-                                                </td>
-                                                <td>
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
-                                                </td>
-                                            </tr>
+                                        @{
+                                            int x = 0;
+                                            @foreach (var iteem in Reviews)
+                                            {
+                                                x++;
+                                                <tr>
+                                                    <th scope="row">@x</th>
+                                                    <td>@iteem.Review</td>
+                                                    <td>@iteem.Product.Name</td>
+                                                </tr>
+                                            }
                                         }
                                     </tbody>
                                 </table>
@@ -96,7 +73,7 @@
                 </div>
             </div>
         </section>
-        </div>
+    </div>
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->

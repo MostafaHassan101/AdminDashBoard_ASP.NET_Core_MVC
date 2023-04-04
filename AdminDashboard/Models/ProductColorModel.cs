@@ -1,9 +1,14 @@
-﻿namespace AdminDashboard.Models
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+
+namespace AdminDashboard.Models
 {
     public class ProductColorModel
     {
-        public string Name { get; protected set; }
+        public long prodid { get;  set; }
+        public long ColorId { get; set; }
 
-        public string HexValue { get; protected set; }
+        public string Name { get;  set; }
+
+        public string HexValue { get;  set; }
     }
 }

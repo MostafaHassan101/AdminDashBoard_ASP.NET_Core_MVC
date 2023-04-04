@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Views\NewFolder\" />
     <Folder Include="wwwroot\ProductImages\" />
     
   </ItemGroup>

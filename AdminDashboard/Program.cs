@@ -1,9 +1,10 @@
 //using AdminDashboard.Data;
 using Context;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,19 +14,26 @@ builder.Services.AddDbContext<DContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+#region builder.Services.AddDefaultIdentity<User>
 
 //builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddRoles<IdentityRole<long>>()
 //    .AddEntityFrameworkStores<DContext>();
+//builder.Services.AddControllersWithViews();
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//});
+#endregion
+
 builder.Services.AddIdentity<User, IdentityRole<long>>()
     .AddEntityFrameworkStores<DContext>();
 builder.Services.ConfigureApplicationCookie(options =>
 {
-
     options.LoginPath = "/User/SignIn";
-   // options.AccessDeniedPath = "/User/NotAuthorized";
-
-
+    // options.AccessDeniedPath = "/User/NotAuthorized";
 });
 
 builder.Services.AddControllersWithViews();
@@ -33,7 +41,16 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+#region
+//if (!app.Environment.IsDevelopment())
+//{
+//    app.UseExceptionHandler("/Error");
+//    app.UseHsts();
+//}
+
 // Configure the HTTP request pipeline.
+#endregion
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -54,10 +71,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-  pattern: "{controller=User}/{action=SignIn}/{id?}");
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-//app.MapRazorPages();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+    //pattern: "{controller=User}/{action=SignIn}/{id?}");
+    //app.MapRazorPages();
 
 app.Run();

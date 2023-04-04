@@ -1,9 +1,11 @@
-﻿@using Domain.Entities;
-@model IEnumerable<Domain.Entities.Category>
+﻿@model Domain.Entities.Product
 
 @{
-    ViewData["Title"] = "Index Category";
+    ViewData["Title"] = "product Colors ";
+    var Prod = ViewBag.Prd;
 }
+
+@*<a asp-action="Create">Create New</a>*@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +24,7 @@
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
+
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -29,7 +32,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="breadcrumb-item active">DataTables Category</li>
+                            <li class="breadcrumb-item active">Color Product</li>
                         </ol>
                     </div>
                 </div>
@@ -40,63 +43,112 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">DataTables Category</h3>
+                            <div class="card-header bg-gradient-info">
+                                <h3 class="card-title">Product Color</h3>
                             </div>
                             <div class="card-body">
                                 <p>
-                                    <a asp-controller="Category" asp-action="Create" class="btn btn-success">Create New</a>
+                                    <a asp-action="CreateColorProduct" asp-route-id="@Prod.Id" class="btn btn-success">Add Colors</a>
+                                </p>
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                       <tr> 
+                                            <th>
+                                                 Name color
+                                             </th>
+                                             <th>
+                                                HexValue
+                                             </th>
+                                             <th>
+                                                 Delete
+                                             </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Prod.ProductColors)
+                                       {
+                                           <tr>
+                                               <td>
+                                                  @item.Name
+                                               </td>
+                                               <td>
+                                                  @item.HexValue        
+                                               </td>
+                                               <td>
+                                                    <a class="btn btn-danger" asp-action="DeleteColorProduct" asp-route-id="@Prod.Id" asp-route-Idcolor="">  Sure Delete Color</a>
+                                                </td>
+                                            </tr>
+                                       }
+                                   </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-gradient-info">
+                                <h3 class="card-title">Product Images</h3>
+                            </div>
+                            <div class="card-body">
+                                <p>
+                                    <a asp-action="CreateImageeProduct" asp-route-id="@Prod.Id" class="btn btn-success">Add Images</a>
                                 </p>
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Id)
+                                                ID
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Name)
+                                                ImagePath
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.NameAr)
+                                                ProductId
                                             </th>
-                                            <th></th>
-                                            <th></th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (var item in Model)
+                                        @foreach (var item in Prod.ProductImages)
                                         {
                                             <tr>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Id)
+                                                    @item.Id
+                                                </td>
+                                                <td style="justify-content: center;">
+                                                    <img src="@item.ImagePath" sp-for="ImagePath" class="form-control" id="exampleInputProductimage" style="width :60%;height : 200px" />
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                    @item.ProductId
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.NameAr)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a>
-                                                </td>
-                                                <td>
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a>
-                                                </td>
-                                                <td>
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
+                                                    <a class="btn btn-danger" asp-action="DeleteImageProduct" asp-route-id="@Prod.Id" asp-route-Idcolor="">  Sure Delete Image</a>
                                                 </td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="card-footer">
+                                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                            </div>
+                            <!-- /.card-body -->
                         </div>
+                        <!-- /.card -->
                     </div>
                 </div>
+                <!-- /.row -->
             </div>
+            <!-- /.container-fluid -->
         </section>
-        </div>
+        <!-- /.content -->
+    </div>
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->

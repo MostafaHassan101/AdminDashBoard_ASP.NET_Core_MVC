@@ -1,30 +1,33 @@
-﻿@model Domain.Entities.Category
+﻿@model AdminDashboard.Models.ProductColorModel
 
 @{
-    ViewData["Title"] = "Create Category";
+    ViewData["Title"] = "Create Colors";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+
 </head>
 <body class="hold-transition sidebar-mini">
 
-        <div class="content-wrapper">
+    <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="breadcrumb-item active">Create Category</li>
+                            <li class="breadcrumb-item active">Create Color</li>
                         </ol>
                     </div>
                 </div>
@@ -36,20 +39,20 @@
                     <div class="col-md-12">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Create Category</h3>
+                                <h3 class="card-title">Create Color</h3>
                             </div>
                             <form asp-action="Create">
                                 <div class="card-body">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                     <div class="form-group">
-                                        <label asp-for="Name" class="control-label"></label>
-                                        <input asp-for="Name" class="form-control" />
+                                        <label asp-for="Name" for="exampleInputName" class="control-label">Name Color</label>
+                                        <input asp-for="Name" type="string" class="form-control" id="exampleInputName" placeholder="Name Color" required>
                                         <span asp-validation-for="Name" class="text-danger"></span>
                                     </div>
                                     <div class="form-group">
-                                        <label asp-for="NameAr" class="control-label"></label>
-                                        <input asp-for="NameAr" class="form-control" />
-                                        <span asp-validation-for="NameAr" class="text-danger"></span>
+                                        <label asp-for="HexValue" class="control-label" for="exampleInputHexValue">HexValue</label>
+                                        <input asp-for="HexValue" type="string" class="form-control" id="exampleInputHexValue" placeholder="Name HexValue" required>
+                                        <span asp-validation-for="HexValue" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="card-footer">
@@ -57,7 +60,7 @@
                                 </div>
                             </form>
                             <div class="card-footer">
-                                <a asp-controller="Category" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                                <a asp-controller="ProductColor" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
                             </div>
                             @{
                                 await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -67,7 +70,9 @@
                 </div>
             </div>
         </section>
-        </div>
+    </div>
+
+
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->

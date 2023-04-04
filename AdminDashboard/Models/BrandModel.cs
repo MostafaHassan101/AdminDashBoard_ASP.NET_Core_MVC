@@ -7,7 +7,5 @@ namespace AdminDashboard.Models
         public string Name { get; set; }
 
         public string NameAr { get; set; }
-
-       // public virtual ICollection<Product>? Products { get; set; }
     }
 }

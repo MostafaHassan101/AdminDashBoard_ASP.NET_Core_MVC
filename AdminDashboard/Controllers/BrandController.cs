@@ -1,10 +1,8 @@
 using AdminDashboard.Models;
 using Context;
 using Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace AdminDashboard.Controllers
 {
@@ -17,6 +15,7 @@ namespace AdminDashboard.Controllers
         {
             _context = context;
         }
+
         // GET: BrandController
         [HttpGet]
         public IActionResult Index()
@@ -25,11 +24,7 @@ namespace AdminDashboard.Controllers
             return View(Brands);
         }
 
-
-
-
         // GET: BrandController/Create
-        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -40,7 +35,6 @@ namespace AdminDashboard.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(BrandModel collection)
         {
-            //!= 
             try
             {
                 var Brands = _context.Brand.ToList();
@@ -52,22 +46,14 @@ namespace AdminDashboard.Controllers
 
                     }
                 }
-                
-                        Brand brand = new Brand()
-                        {
-                            Name = collection.Name,
-                            NameAr = collection.NameAr,
-                            //  Products = collection.Products
-                        };
-                        _context.Brand.Add(brand);
-                        _context.SaveChanges();
-
-                        return RedirectToAction(nameof(Index));
-                    
-                
-               // return View();
-
-
+                Brand brand = new Brand()
+                  {
+                    Name = collection.Name,
+                    NameAr = collection.NameAr,
+                  };
+                  _context.Brand.Add(brand);
+                  _context.SaveChanges();
+                  return RedirectToAction(nameof(Index));                 
             }
             catch
             {
@@ -82,15 +68,14 @@ namespace AdminDashboard.Controllers
             ViewBag.brand = brand;
             return View();
         }
+
         // GET: BrandController/Details/5
         [HttpGet]
         public IActionResult Details(int id)
         {
             ViewBag.Title = "Brand Details";
-
             List<Product> products = new List<Product>();
             products = _context.Product.Where(Product => Product.Brand.Id == id).ToList();
-            // Brand brand = _context.Brand.Include(b=>b.Products).Single(b => b.Id == id);
             ViewBag.Products = products;
             return View();
         }

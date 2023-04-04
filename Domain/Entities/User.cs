@@ -11,15 +11,15 @@ namespace Domain.Entities
 
 		public string? Address { get;  set; }
 
-		public string? City { get; set; }
+		public string? City { get;  set; }
 
-		public string? Phone { get; set; }
+		public string? Phone { get;  set; }
 
-		public virtual ICollection<Order>? Orders { get; protected set; }
+		public virtual ICollection<Order>? Orders { get;  set; }
 
-		public virtual ICollection<ProductReview>? Reviews { get; protected set; }
+		public virtual ICollection<ProductReview>? Reviews { get;  set; }
 
-		public virtual WishList? WishList { get; protected set; }
+		public virtual WishList? WishList { get;  set; }
 
 	}
 }

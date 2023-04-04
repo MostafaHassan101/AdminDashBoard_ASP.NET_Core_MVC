@@ -1,88 +1,173 @@
 ﻿@model AdminDashboard.Models.ProductModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Product";
     var product = ViewBag.product;
 }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<h1>Delete</h1>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
 
-<h3>Are you sure you want to delete @product.Name?</h3>
-<div>
-    <h4>ProductModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NameAr)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NameAr)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DescriptionAr)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DescriptionAr)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sizes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sizes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Discount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Discount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ModelNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ModelNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BrandId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BrandId)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
-</div>
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active">Delete Product</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-danger">
+                                <h2 class="card-title ">Are you sure you want to delete Product</h2>
+                            </div>
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead class="bg-danger">
+                                        <tr>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.Name)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.NameAr)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.Description)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.DescriptionAr)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                @Html.DisplayNameFor(model => model.ImagePath)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.Price)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.Sizes)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.Discount)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.Quantity)
+                                            </th>
+                                            <th class="col-sm-2">
+                                                    @Html.DisplayNameFor(model => model.ModelNumber)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <h6>@product.Name</h6>
+                                            </td>
+                                            <td>
+                                                <h6>@product.NameAr</h6>
+                                            </td>
+                                            <td>
+                                                <h6>@product.Description</h6>
+                                            </td>
+                                            <td>
+                                                <h6>@product.DescriptionAr</h6>
+                                            </td>
+                                            <td>
+                                                <img src="@product.ImagePath" width="160" height="180"/>
+                                            </td>
+                                            <td>
+                                                <h6>@product.Price</h6>
+                                            </td>
+                                            <td>
+                                                <h6>@product.Sizes</h6>
+                                            </td>
+                                            <td>
+                                                <h6>@product.Discount</h6>
+                                            </td>
+                                            <td>
+                                                <h6>@product.Quantity</h6>
+                                            </td>
+                                            <td>
+                                                <h6>@product.ModelNumber</h6>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer clearfix">
+                                <form asp-action="Delete">
+                                    <input type="submit" value="Delete" class="btn btn-danger" />
+                                </form>
+                                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/jszip/jszip.min.js"></script>
+    <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/dist/js/demo.js"></script>
+    <!-- Page specific script -->
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+</body>
+</html>
