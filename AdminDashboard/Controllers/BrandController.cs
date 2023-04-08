@@ -18,14 +18,19 @@ namespace AdminDashboard.Controllers
 
         // GET: BrandController
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string filter)
         {
             var Brands = _context.Brand.ToList();
+            if (filter != null)
+            {
+                Brands = Brands.Where(b => b.Name.ToLower().Contains(filter.ToLower())).ToList();
+            }
+            
             return View(Brands);
         }
 
         // GET: BrandController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -33,7 +38,7 @@ namespace AdminDashboard.Controllers
         // POST: BrandController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(BrandModel collection)
+        public async Task <IActionResult> Create(BrandModel collection)
         {
             try
             {
@@ -51,8 +56,8 @@ namespace AdminDashboard.Controllers
                     Name = collection.Name,
                     NameAr = collection.NameAr,
                   };
-                  _context.Brand.Add(brand);
-                  _context.SaveChanges();
+                await  _context.Brand.AddAsync(brand);
+                 await _context.SaveChangesAsync();
                   return RedirectToAction(nameof(Index));                 
             }
             catch
@@ -62,13 +67,33 @@ namespace AdminDashboard.Controllers
         }
 
         // GET: BrandController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             Brand brand = _context.Brand.Single(b => b.Id == id);
             ViewBag.brand = brand;
             return View();
         }
 
+    
+        // POST: BrandController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task <IActionResult> Edit(int id, BrandModel collection)
+        {
+            try
+            {
+                Brand brand = _context.Brand.Single(b => b.Id == id);
+                brand.Name = collection.Name;
+                brand.NameAr = collection.NameAr;
+                _context.Brand.Update(brand);
+              await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
         // GET: BrandController/Details/5
         [HttpGet]
         public IActionResult Details(int id)
@@ -79,39 +104,9 @@ namespace AdminDashboard.Controllers
             ViewBag.Products = products;
             return View();
         }
-        // POST: BrandController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, BrandModel collection)
-        {
-            try
-            {
-                Brand brand = _context.Brand.Single(b => b.Id == id);
-                brand.Name = collection.Name;
-                brand.NameAr = collection.NameAr;
-                _context.Brand.Update(brand);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: BrandController/Delete/5
-        [HttpGet]
-        public ActionResult Delete(int id)
-        {
-            Brand brand = _context.Brand.Single(b => b.Id == id);
-            ViewBag.brand = brand;
-            return View();
-        }
 
         // POST: BrandController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, BrandModel brandModel)
+        public ActionResult Delete(int id)
         {
             try
             {

@@ -43,9 +43,18 @@
                                 <h3 class="card-title">DataTables Brand</h3>
                             </div>
                             <div class="card-body">
-                                <p>
-                                    <a asp-controller="Brand" asp-action="Create" class="btn btn-success">Create New</a>
-                                </p>
+                                <div class="row" style="justify-content:space-between">
+                                    <p>
+                                        <a asp-controller="Brand" asp-action="Create" class="btn btn-success">Create New</a>
+                                    </p>
+                                    <div class="col-3">
+                                        <form method="get" class="d-flex" asp-controller="Brand" asp-action="Index">
+                                            <input name="filter" id="text" class="form-control mx-2" type="search" placeholder="Search" aria-label="Search">
+                                            <button id="sub" class="btn bg-light btn-outline-dark text-dark" type="submit">Search</button>
+                                        </form>
+                                    </div>
+
+                                </div>
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -55,9 +64,8 @@
                                             <th>
                                                 @Html.DisplayNameFor(model => model.NameAr)
                                             </th>
-                                            <th>Edit</th>
-                                            <th>Details</th>
-                                            <th>Delete</th>
+                                            <th class="text-center">Edit</th>
+                                            <th class="text-center">Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -66,9 +74,11 @@
                                         <tr>
                                             <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                             <td>@Html.DisplayFor(modelItem => item.NameAr)</td>
-                                            <td><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a></td>
-                                            <td><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a></td>
-                                            <td><a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a></td>
+                                            <td><a asp-action="Edit" asp-route-id="@item.Id" 
+                                                class=" col-12  mx-auto btn btn-outline-primary">Edit</a></td>
+                                            <td ><a asp-action="Delete" asp-route-id="@item.Id" 
+                                                class=" col-9 mx-auto btn btn-outline-danger"
+                                                       onclick="return confirm('Are you sure you want to delete this user: @item.Name')">Delete</a></td>
                                         </tr>
                                         }
                                     </tbody>

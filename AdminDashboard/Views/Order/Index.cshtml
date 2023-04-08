@@ -29,7 +29,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="breadcrumb-item active">DataTables Orders</li>
+                            <li class="breadcrumb-item active">Orders</li>
                         </ol>
                     </div>
                 </div>
@@ -41,32 +41,29 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">DataTables All Orders</h3>
+                                <h3 class="card-title">All Orders</h3>
                             </div>
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.User.FirstName)
+                                                Customer Name
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.User.LastName)
+                                              Mobile Number
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.UserPhone)
+                                              Adress
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Address)
+                                                Order Discount
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.Discount)
+                                                Order PaymentMethod
                                             </th>
                                             <th>
-                                                @Html.DisplayNameFor(model => model.PaymentMethod)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.TotalPrice)
+                                                Order TotalPrice
                                             </th>
                                         </tr>
                                     </thead>
@@ -75,15 +72,12 @@
                                         {
                                             <tr>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem =>item.User.FirstName )
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem =>item.User.LastName )
+                                                   @item.User.FirstName  @item.User.LastName 
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.UserPhone)
                                                 </td>
-                                                <td>
+                                                <td style="height:2em; overflow:hidden">
                                                     @Html.DisplayFor(modelItem => item.Address)
                                                 </td>
                                                 <td>
@@ -96,7 +90,7 @@
                                                     @Html.DisplayFor(modelItem => item.TotalPrice)
                                                 </td>
                                                 <td>
-                                                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                                    <a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
                                                 </td>
                                             </tr>
                                         }

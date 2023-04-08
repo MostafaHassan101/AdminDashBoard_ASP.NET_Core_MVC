@@ -25,9 +25,27 @@ namespace AdminDashboard.Controllers
 
         // GET: ProductController
         [HttpGet]
-        public IActionResult Index(int PageIndex = 1, int PageSize = 3)
+        public IActionResult Index(string filter, int PageIndex = 1, int PageSize = 3 )
         {
             var products = _context.Product.ToList();
+            List<Product> filtered = new List<Product>();
+          
+            if (filter != null)
+            {
+               foreach(var product in products)
+                {
+
+                    if (product.Name.ToLower().Contains(filter.ToLower()))
+                    {
+                        filtered.Add(product);
+                    }
+
+                }
+                return View(filtered);
+
+                //products = filtered;
+            }
+           
             return View(products);
         }
         
@@ -221,18 +239,10 @@ namespace AdminDashboard.Controllers
             }
         }
 
-        // GET: ProductController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            var product = _context.Product.Single(a => a.Id == id) ;
-            ViewBag.product=product;
-            return View();
-        }
+     
 
-        // POST: ProductController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task <ActionResult> Delete(int id, IFormCollection collection)
+        
+        public async Task <ActionResult> Delete(int id)
         {
             try
             {
@@ -410,8 +420,7 @@ namespace AdminDashboard.Controllers
             }
         }
 
-
-
+      
 
     }
 }
