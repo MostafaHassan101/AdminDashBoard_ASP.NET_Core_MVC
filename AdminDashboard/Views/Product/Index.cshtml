@@ -28,7 +28,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="breadcrumb-item active">DataTables Product</li>
+                            <li class="breadcrumb-item active">Products</li>
                         </ol>
                     </div>
                 </div>
@@ -38,92 +38,59 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">DataTables Product</h3>
+                                <h3 class="card-title">Products</h3>
                             </div>
                             <div class="card-body">
+                                <div class="row" style="justify-content:space-between">
                                 <p>
                                     <a asp-controller="Product" asp-action="Create" class="btn btn-success">Create New</a>
                                 </p>
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Name)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Description)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.ImagePath)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Price)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Sizes)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Rate)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Discount)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.Quantity)
-                                            </th>
-                                            <th>
-                                                @Html.DisplayNameFor(model => model.ModelNumber)
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                    <div class="col-3">
+                                        <form method="get" class="d-flex" asp-controller="Product" asp-action="Index">
+                                            <input name="filter" id="text" class="form-control mx-2" type="search" placeholder="Search" aria-label="Search">
+                                            <button id="sub" class="btn bg-light btn-outline-dark text-dark" type="submit">Search</button>
+                                        </form>
+                                    </div>
+                              
+                                </div>
+ 
+                                <div class="row">
+                                   
                                         @foreach (var item in Model)
                                         {
-                                                <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Description)
-                                                </td>
-                                                <td>
+                                            <div class="col-4">
+                                           
+                                             <div class="card mr-1 " height="60vh" >
+                                                 <div class="row">
+                                                <img src="@Html.DisplayFor(modelItem => item.ImagePath)" class="card-img-top col-8 m-auto" id="Image-Tag" width="100" height="200" />
+                                                 </div>
+                                                <div class="card-body">
 
-                                                   <img src="@Html.DisplayFor(modelItem => item.ImagePath)" width="100" height="100" id="Image-Tag" />
-
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Price)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Sizes)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Rate)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Discount)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Quantity)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.ModelNumber)
-                                                </td>
-                                                <td>
-                                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning" style="margin: 3px;width:100%;">Edit</a><br>
-                                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info" style="margin: 3px;width:100%;">Details</a><br>
-                                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" style="margin: 3px;width:100%;">Delete</a><br>
-                                                    <a asp-action="ProductImagesAndColors" asp-route-id="@item.Id" class="btn btn-outline-success" style="margin: 3px;width:100%;">Images & Colors</a>
-                                                </td>
-                                            </tr>
-                                            }
-									</tbody>
-                                </table>
+                                                     <p class="m-0 " style=" height:1.5em; overflow:hidden"><span style="font-weight:bold"> Name:</span>  @Html.DisplayFor(modelItem => item.Name)</p>
+                                                    <p class="m-0"><span style="font-weight:bold"> Price:</span>   @Html.DisplayFor(modelItem => item.Price) </p>
+                                                     <p class="m-0"><span style="font-weight:bold"> Discount:</span>@Html.DisplayFor(modelItem => item.Discount) </p>
+                                                       <p class="m-0"><span style="font-weight:bold"> Quantity: </span>@Html.DisplayFor(modelItem => item.Quantity) </p>
+                                                     <div style="display:flex; flex-direction:column; justify-content:flex-end">
+                                                    <div class="row mt-2">
+                                                         <a  asp-action="Edit" asp-route-id="@item.Id" class="m-auto col-5 btn btn-outline-warning">Edit</a><br>
+                                                         <a  asp-action="Details" asp-route-id="@item.Id" class="m-auto col-5 btn btn-outline-info">Details</a><br>
+                                                    </div>
+                                                      
+                                                    <div class="row mt-2">
+                                                         <a asp-action="Delete" asp-route-id="@item.Id"
+                                                            class="m-auto  col-5 btn btn-outline-danger"
+                                                             onclick="return confirm('Are you sure you want to delete this user: @item.Name')">Delete</a><br>
+                                                             <a asp-action="ProductImagesAndColors" asp-route-id="@item.Id" class="m-auto  col-5 btn btn-outline-success">Images&Colors</a>
+                                                    </div>
+                                            </div>
+                                                    </div>
+                              
+                                            </div>
+                                            </div>
+                                        }
+                                    <div>
                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
