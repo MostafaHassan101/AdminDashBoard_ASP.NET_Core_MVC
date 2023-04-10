@@ -20,14 +20,14 @@ namespace AdminDashboard.Controllers
 
         // GET: ProductController
         [HttpGet]
-        public IActionResult Index(string filter, int PageIndex = 1, int PageSize = 3 )
+        public IActionResult Index(string filter, int PageIndex = 1, int PageSize = 3)
         {
             var products = _context.Product.ToList();
             List<Product> filtered = new List<Product>();
-          
+
             if (filter != null)
             {
-               foreach(var product in products)
+                foreach (var product in products)
                 {
 
                     if (product.Name.ToLower().Contains(filter.ToLower()))
@@ -40,350 +40,351 @@ namespace AdminDashboard.Controllers
 
                 //products = filtered;
             }
-           
+
             return View(products);
-        
-        
-        //[HttpGet]
-        //public ActionResult ProductImagesAndColors(int id)
-        //{
-        //    Product product = _context.Product.Include("ProductColors").Include("ProductImages").Single(p => p.Id == id);
-        //    ViewBag.Prd = product;
-        //    return View();
-        //}
-        
-        // GET: ProductController/Create
-        public ActionResult Create()
-        {
-            ViewBag.brands = _context.Brand.ToList();
-            ViewBag.categories = _context.Category.Where(p => p.ParentCategory != null).ToList();
-            ViewBag.ProductColors = _context.ProductColors.ToList();
-            return View();
         }
 
-        // POST: ProductController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ProductModel collection)
-        {
-            try
+            //[HttpGet]
+            //public ActionResult ProductImagesAndColors(int id)
+            //{
+            //    Product product = _context.Product.Include("ProductColors").Include("ProductImages").Single(p => p.Id == id);
+            //    ViewBag.Prd = product;
+            //    return View();
+            //}
+
+            // GET: ProductController/Create
+            public ActionResult Create()
             {
-                Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
-                Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
+                ViewBag.brands = _context.Brand.ToList();
+                ViewBag.categories = _context.Category.Where(p => p.ParentCategory != null).ToList();
+                ViewBag.ProductColors = _context.ProductColors.ToList();
+                return View();
+            }
 
-                string fileNameImage = collection.ImagePath.FileName;
-                fileNameImage = Path.GetFileName(fileNameImage);
-                string uploadpathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileNameImage);
-                var streamoneImage = new FileStream(uploadpathImage, FileMode.Create);
-                string path = "/ProductImages/" + fileNameImage;
-                await collection.ImagePath.CopyToAsync(streamoneImage);
-
-
-
-                ///////////////
-
-                List<ProductImage> ProductImagess = new List<ProductImage>();
+            // POST: ProductController/Create
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<ActionResult> Create(ProductModel collection)
+            {
                 try
                 {
-                    foreach (var file in collection.Images)
+                    Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
+                    Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
+
+                    string fileNameImage = collection.ImagePath.FileName;
+                    fileNameImage = Path.GetFileName(fileNameImage);
+                    string uploadpathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileNameImage);
+                    var streamoneImage = new FileStream(uploadpathImage, FileMode.Create);
+                    string path = "/ProductImages/" + fileNameImage;
+                    await collection.ImagePath.CopyToAsync(streamoneImage);
+
+
+
+                    ///////////////
+
+                    List<ProductImage> ProductImagess = new List<ProductImage>();
+                    try
                     {
-                        string fileName = file.FileName;
-                        fileName = Path.GetFileName(fileName);
-                        string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
-                        var stream = new FileStream(uploadpath, FileMode.Create);
-                        string pathnew = "/ProductImages/" + fileName;
-                        await file.CopyToAsync(stream);
-                        ProductImagess.Add(new ProductImage()
+                        foreach (var file in collection.Images)
                         {
-                            ImagePath = pathnew
-                        });
+                            string fileName = file.FileName;
+                            fileName = Path.GetFileName(fileName);
+                            string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
+                            var stream = new FileStream(uploadpath, FileMode.Create);
+                            string pathnew = "/ProductImages/" + fileName;
+                            await file.CopyToAsync(stream);
+                            ProductImagess.Add(new ProductImage()
+                            {
+                                ImagePath = pathnew
+                            });
+                        }
+                        ViewBag.Message = "File uploaded successfully.";
                     }
-                    ViewBag.Message = "File uploaded successfully.";
+                    catch
+                    {
+                        ViewBag.Message = "Error while uploading the files.";
+                    }
+                    ///////////////
+
+                    List<ProductColor> productColorss = new List<ProductColor>();
+                    foreach (long c in collection.ProductColorsidsIds)
+                    {
+                        ProductColor productColor = _context.ProductColors.Single(co => co.Id == c);
+                        productColorss.Add(productColor);
+                    }
+
+                    Product product = new Product()
+                    {
+                        Name = collection.Name,
+                        NameAr = collection.NameAr,
+                        Discount = collection.Discount,
+                        Description = collection.Description,
+                        DescriptionAr = collection.DescriptionAr,
+                        Category = cat,
+                        Brand = brand,
+                        Price = collection.Price,
+                        ModelNumber = collection.ModelNumber,
+                        Quantity = collection.Quantity,
+                        ProductColors = productColorss,
+                        ProductImages = ProductImagess,
+                        ImagePath = path,
+
+                    };
+                    await _context.Product.AddAsync(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch
                 {
-                    ViewBag.Message = "Error while uploading the files.";
+                    return View();
                 }
-                ///////////////
+            }
 
-                List<ProductColor> productColorss = new List<ProductColor>();
-                foreach (long c in collection.ProductColorsidsIds)
+            // GET: ProductController/Edit/5
+            public ActionResult Edit(int id)
+            {
+                Product Product = _context.Product
+
+                    .Include(p => p.Category).Include(a => a.ProductColors)
+                    .Include(p => p.Brand).Include(a => a.ProductImages).Single(b => b.Id == id);
+
+                var categories = _context.Category.Where(p => p.ParentCategory != null).ToList();
+                var brands = _context.Brand.ToList();
+                var ProductColors = _context.ProductColors.ToList();
+                ViewBag.brands = brands;
+                ViewBag.categories = categories;
+                ViewBag.Product = Product;
+                ViewBag.ProductColors = ProductColors;
+                return View();
+            }
+
+            // POST: ProductController/Edit/5
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<ActionResult> Edit(int id, ProductModel collection)
+            {
+                var product = _context.Product.Include("Brand").Include("Category").Single(p => p.Id == id);
+                try
                 {
-                    ProductColor productColor = _context.ProductColors.Single(co => co.Id == c);
-                    productColorss.Add(productColor);
+                    #region Update file Image
+                    //string fileNameImage = collection.ImagePath.FileName;
+
+                    //fileNameImage = Path.GetFileName(fileNameImage);
+
+                    //string uploadpathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileNameImage);
+
+                    //var streamoneImage = new FileStream(uploadpathImage, FileMode.Create);
+
+                    //string path = "wwwroot/ProductImages/" + fileNameImage;
+                    //await collection.ImagePath.CopyToAsync(streamoneImage);
+                    //try{
+                    //    foreach (var file in collection.Images)
+                    //    {
+                    //        string fileName = file.FileName;
+
+                    //        fileName = Path.GetFileName(fileName);
+                    //        string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
+
+                    //        var stream = new FileStream(uploadpath, FileMode.Create);
+
+                    //        string pathnew = "wwwroot/ProductImages/" + fileName;
+                    //        await file.CopyToAsync(stream);
+                    //        product.AddImage(new ProductImage() { ImagePath = pathnew });
+                    //    }
+                    //    ViewBag.Message = "File uploaded successfully.";
+                    //}
+                    //catch
+
+                    //{
+                    //     ViewBag.Message = "Error while uploading the files.";
+                    //}
+                    //foreach (long c in collection.ProductColorsidsIds)
+                    //{
+                    //    ProductColor productColor = _context.ProductColors.Single(co => co.Id == c);
+                    //    product.AddColor(new ProductColor() { Name = productColor.Name,HexValue=productColor.HexValue });
+                    //}
+                    #endregion
+
+                    Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
+                    Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
+
+                    product.Name = collection.Name;
+                    product.NameAr = collection.NameAr;
+                    product.Discount = collection.Discount;
+                    product.Description = collection.Description;
+                    product.DescriptionAr = collection.DescriptionAr;
+
+                    product.Category = cat;
+                    product.Brand = brand;
+                    product.Price = collection.Price;
+                    product.ModelNumber = collection.ModelNumber;
+                    product.Quantity = collection.Quantity;
+                    _context.Product.Update(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-
-                Product product = new Product()
+                catch
                 {
-                    Name = collection.Name,
-                    NameAr = collection.NameAr,
-                    Discount = collection.Discount,
-                    Description = collection.Description,
-                    DescriptionAr = collection.DescriptionAr,
-                    Category = cat,
-                    Brand = brand,
-                    Price = collection.Price,
-                    ModelNumber = collection.ModelNumber,
-                    Quantity = collection.Quantity,
-                    ProductColors = productColorss,
-                    ProductImages = ProductImagess,
-                    ImagePath = path,
-
-                };
-                await _context.Product.AddAsync(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    return View();
+                }
             }
-            catch
+
+
+
+            public async Task<ActionResult> Delete(int id)
             {
+                try
+                {
+                    var product = _context.Product.Single(p => p.Id == id);
+                    _context.Product.Remove(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
+            }
+
+
+            [HttpGet]
+            public IActionResult Details(int id)
+            {
+                var prd = _context.Product.Include("ProductColors").Include("ProductImages").Include("ProductReview").Single(p => p.Id == id);
+                ViewBag.Product = prd;
+
+                var colors = prd.ProductColors;
+                ViewBag.ProductColors = colors;
+
+                var Images = prd.ProductImages;
+                ViewBag.ProductImages = Images;
+
+                var Reviews = prd.ProductReview;
+                ViewBag.ProductReview = Reviews;
+
                 return View();
             }
-        }
 
-        // GET: ProductController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            Product Product = _context.Product
 
-                .Include(p => p.Category).Include(a => a.ProductColors)
-                .Include(p => p.Brand).Include(a=>a.ProductImages).Single(b => b.Id == id);
 
-            var categories = _context.Category.Where(p => p.ParentCategory != null).ToList();
-            var brands = _context.Brand.ToList();
-            var ProductColors = _context.ProductColors.ToList();
-            ViewBag.brands = brands;
-            ViewBag.categories = categories;
-            ViewBag.Product = Product;
-            ViewBag.ProductColors = ProductColors;
-            return View();
-        }
+            //Product Colors Create and Delete
 
-        // POST: ProductController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, ProductModel collection)
-        {
-            var product = _context.Product.Include("Brand").Include("Category").Single(p => p.Id == id);
-            try
+            public ActionResult CreateColorProduct(long id)
             {
-                #region Update file Image
-                //string fileNameImage = collection.ImagePath.FileName;
-
-                //fileNameImage = Path.GetFileName(fileNameImage);
-
-                //string uploadpathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileNameImage);
-
-                //var streamoneImage = new FileStream(uploadpathImage, FileMode.Create);
-
-                //string path = "wwwroot/ProductImages/" + fileNameImage;
-                //await collection.ImagePath.CopyToAsync(streamoneImage);
-                //try{
-                //    foreach (var file in collection.Images)
-                //    {
-                //        string fileName = file.FileName;
-
-                //        fileName = Path.GetFileName(fileName);
-                //        string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
-
-                //        var stream = new FileStream(uploadpath, FileMode.Create);
-
-                //        string pathnew = "wwwroot/ProductImages/" + fileName;
-                //        await file.CopyToAsync(stream);
-                //        product.AddImage(new ProductImage() { ImagePath = pathnew });
-                //    }
-                //    ViewBag.Message = "File uploaded successfully.";
-                //}
-                //catch
-
-                //{
-                //     ViewBag.Message = "Error while uploading the files.";
-                //}
-                //foreach (long c in collection.ProductColorsidsIds)
-                //{
-                //    ProductColor productColor = _context.ProductColors.Single(co => co.Id == c);
-                //    product.AddColor(new ProductColor() { Name = productColor.Name,HexValue=productColor.HexValue });
-                //}
-                #endregion
-
-                Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
-                Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
-
-                product.Name = collection.Name;
-                product.NameAr = collection.NameAr;
-                product.Discount = collection.Discount;
-                product.Description = collection.Description;
-                product.DescriptionAr = collection.DescriptionAr;
-
-                product.Category =cat;
-                product.Brand = brand;
-                product.Price = collection.Price;
-                product.ModelNumber = collection.ModelNumber;
-                product.Quantity = collection.Quantity;
-                _context.Product.Update(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
+                var prodid = _context.Product.Single(p => p.Id == id);
+                ViewBag.Product = prodid;
+                ViewBag.ProductColors = _context.ProductColors.ToList();
                 return View();
             }
-        }
 
 
-        
-        public async Task <ActionResult> Delete(int id)
-        {
-            try
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<ActionResult> CreateColorProduct(ProductColorModel productColorModel)
             {
-                var product = _context.Product.Single(p => p.Id == id);
-                _context.Product.Remove(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-
-        [HttpGet]
-        public IActionResult Details(int id)
-        {
-            var prd = _context.Product.Include("ProductColors").Include("ProductImages").Include("ProductReview").Single(p => p.Id == id);
-            ViewBag.Product = prd;
-
-            var colors = prd.ProductColors;
-            ViewBag.ProductColors = colors;
-
-            var Images = prd.ProductImages;
-            ViewBag.ProductImages = Images;
-
-            var Reviews = prd.ProductReview;
-            ViewBag.ProductReview = Reviews;
-
-            return View();
-        }
-
-
-
-        //Product Colors Create and Delete
-
-        public ActionResult CreateColorProduct(long id)
-        {
-            var prodid = _context.Product.Single(p => p.Id == id);
-            ViewBag.Product = prodid;
-            ViewBag.ProductColors = _context.ProductColors.ToList();
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateColorProduct(ProductColorModel productColorModel)
-        {
-            var color = _context.ProductColors.Single(a => a.Id == productColorModel.ColorId);
-            var prodid = _context.Product.Include(p => p.ProductColors).Single(p => p.Id == productColorModel.prodid);
+                var color = _context.ProductColors.Single(a => a.Id == productColorModel.ColorId);
+                var prodid = _context.Product.Include(p => p.ProductColors).Single(p => p.Id == productColorModel.prodid);
 
                 prodid.ProductColors.Add(color);
                 await _context.SaveChangesAsync();
-            return RedirectToAction("Edit", "Product", new { id = prodid.Id });
-        }
-
-
-        public async Task<ActionResult> DeleteColorProduct(long id, long prd)
-        {
-            var product = _context.Product.Include(p => p.ProductColors).Single(p => p.Id == prd);
-            var color = _context.ProductColors.Single(c => c.Id == id);
-            try
-            {
-                product.ProductColors.Remove(color);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Edit", "Product", new { id = prd });
+                return RedirectToAction("Edit", "Product", new { id = prodid.Id });
             }
-            catch
+
+
+            public async Task<ActionResult> DeleteColorProduct(long id, long prd)
             {
-                return View();
-            }
-        }
-
-
-        //Product Images Create and Delete
-
-        public ActionResult CreateImageeProduct(long id)
-        {
-            var prodid = _context.Product.Single(p => p.Id == id);
-            ViewBag.Product = prodid;
-            ViewBag.ProdImages = _context.ProductImages.ToList();
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateImageeProduct(ProductImageesModel productImageModel, ProductModel productModel)
-        {
-            //var ImagePath = _context.ProductImages.Single(a => a.Id == productImageModel.Id);
-            var prodid = _context.Product.Include(p => p.ProductImages).Single(p => p.Id == productImageModel.ProductId);
-            try
-            {
-
-                List<ProductImage> ProductImagess = new List<ProductImage>();
+                var product = _context.Product.Include(p => p.ProductColors).Single(p => p.Id == prd);
+                var color = _context.ProductColors.Single(c => c.Id == id);
                 try
                 {
-
-                    foreach (var file in productImageModel.ImagePaths)
-                    {
-                        string fileName = file.FileName;
-                        fileName = Path.GetFileName(fileName);
-                        string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
-                        var stream = new FileStream(uploadpath, FileMode.Create);
-                        string pathnew = "/ProductImages/" + fileName;
-                        await file.CopyToAsync(stream);
-                        ProductImagess.Add(new ProductImage()
-                        {
-                            ImagePath = pathnew
-                        });
-                    }
-                    ViewBag.Message = "File uploaded successfully.";
+                    product.ProductColors.Remove(color);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Edit", "Product", new { id = prd });
                 }
                 catch
                 {
-                    ViewBag.Message = "Error while uploading the files.";
+                    return View();
                 }
-                ///////////////
-                Product product = new Product()
+            }
+
+
+            //Product Images Create and Delete
+
+            public ActionResult CreateImageeProduct(long id)
+            {
+                var prodid = _context.Product.Single(p => p.Id == id);
+                ViewBag.Product = prodid;
+                ViewBag.ProdImages = _context.ProductImages.ToList();
+                return View();
+            }
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<ActionResult> CreateImageeProduct(ProductImageesModel productImageModel, ProductModel productModel)
+            {
+                //var ImagePath = _context.ProductImages.Single(a => a.Id == productImageModel.Id);
+                var prodid = _context.Product.Include(p => p.ProductImages).Single(p => p.Id == productImageModel.ProductId);
+                try
                 {
-                    ProductImages = ProductImagess,
-                };
-                await _context.Product.AddAsync(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                    List<ProductImage> ProductImagess = new List<ProductImage>();
+                    try
+                    {
+
+                        foreach (var file in productImageModel.ImagePaths)
+                        {
+                            string fileName = file.FileName;
+                            fileName = Path.GetFileName(fileName);
+                            string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
+                            var stream = new FileStream(uploadpath, FileMode.Create);
+                            string pathnew = "/ProductImages/" + fileName;
+                            await file.CopyToAsync(stream);
+                            ProductImagess.Add(new ProductImage()
+                            {
+                                ImagePath = pathnew
+                            });
+                        }
+                        ViewBag.Message = "File uploaded successfully.";
+                    }
+                    catch
+                    {
+                        ViewBag.Message = "Error while uploading the files.";
+                    }
+                    ///////////////
+                    Product product = new Product()
+                    {
+                        ProductImages = ProductImagess,
+                    };
+                    await _context.Product.AddAsync(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+
+                }
+                catch
+                {
+                    return View();
+
+                }
 
             }
-            catch
+
+
+
+            public async Task<ActionResult> DeleteImageProduct(long id, long prd)
             {
-                return View();
-
+                var product = _context.Product.Include(p => p.ProductImages).Single(p => p.Id == prd);
+                var Image = _context.ProductImages.Single(c => c.Id == id);
+                try
+                {
+                    product.ProductImages.Remove(Image);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Edit", "Product", new { id = prd });
+                }
+                catch
+                {
+                    return View();
+                }
             }
-
-        }
-
-
-
-        public async Task<ActionResult> DeleteImageProduct(long id, long prd)
-        {
-            var product = _context.Product.Include(p => p.ProductImages).Single(p => p.Id == prd);
-            var Image = _context.ProductImages.Single(c => c.Id == id);
-            try
-            {
-                product.ProductImages.Remove(Image);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Edit", "Product", new { id = prd });
-            }
-            catch
-            {
-                return View();
-            }
-        }
-   }
+        
+    }
 }
