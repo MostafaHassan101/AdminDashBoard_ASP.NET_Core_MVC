@@ -47,52 +47,67 @@
                                 <h3 class="card-title">All Orders</h3>
                             </div>
                             <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
+                                <a class="btn btn-success m-1" class="txtFont" asp-action="PendingOrders">Pending Orders</a>
+
+                                <table id="example2" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th class="txtFont">
+                                            <th class="txtFont d-table-cell d-sm-table-cell d-md-table-cell">
                                               Customer Name
                                             </th>
-                                            <th class="txtFont">
+                                            <th class="txtFont d-none d-sm-none d-md-table-cell">
                                               Mobile Number
                                             </th>
-                                            <th class="txtFont">
+                                            <th class="txtFont d-none d-sm-table-cell d-md-table-cell">
                                               Adress
                                             </th>
-                                            <th class="txtFont d-none d-sm-table-cell d-md-table-cell">
-                                              Order Discount
+                                            <th class="txtFont d-table-cell d-sm-table-cell d-md-table-cell">
+                                                Ordered Date
                                             </th>
                                             <th class="txtFont d-none d-sm-table-cell d-md-table-cell">
-                                              Order PaymentMethod
+                                             PaymentMethod
                                             </th>
-                                            <th class="txtFont">
-                                              Order TotalPrice
+                                            <th class="txtFont d-table-cell d-sm-table-cell d-md-table-cell">
+                                            Status
                                             </th>
+                                        
+                                            <th class="txtFont d-table-cell d-sm-table-cell d-md-table-cell">
+                                            Details
+                                            </th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
+
                                             <tr>
-                                                <td class="txtFont">
+
+                                                <td class="txtFont d-table-cell d-sm-table-cell d-md-table-cell">
                                                    @item.User.FirstName  @item.User.LastName 
                                                 </td>
-                                                <td class="txtFont">
+                                                <td class="txtFont d-none d-sm-none d-md-table-cell">
                                                     @Html.DisplayFor(modelItem => item.UserPhone)
                                                 </td>
-                                                <td style="height:2em; overflow:hidden" class="txtFont">
+                                                <td style="height:2em; overflow:hidden" class="txtFont d-none d-sm-table-cell d-md-table-cell">
                                                     @Html.DisplayFor(modelItem => item.Address)
                                                 </td>
-                                                <td class="txtFont d-none d-sm-table-cell d-md-table-cell">
-                                                    @Html.DisplayFor(modelItem => item.Discount)
+                                                <td style="height:2em; overflow:hidden" class="txtFont d-table-cell d-sm-table-cell d-md-table-cell">
+                                                    @Html.DisplayFor(modelItem => item.CreatedAt)
                                                 </td>
+
                                                 <td class="txtFont d-none d-sm-table-cell d-md-table-cell">
                                                     @Html.DisplayFor(modelItem => item.PaymentMethod)
                                                 </td>
-                                                <td class="txtFont">
-                                                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                                                <td class="txtFont d-table-cell d-sm-table-cell d-md-table-cell">
+                                                    @Html.DisplayFor(modelItem => item.Status)
                                                 </td>
-                                                <td >
+                                                <td class="txtFont d-table-cell d-sm-table-cell d-md-table-cell">
+                                                   @if(item.IsDeleted==true)
+                                                    {
+                                                        <h5 class="fw-bold text-danger">CANCLED</h5>
+                                                    }
+                                                  
                                                     <a class="btn btn-outline-info" class="txtFont" asp-action="Details" asp-route-id="@item.Id">Details</a>
                                                 </td>
                                             </tr>
@@ -137,8 +152,8 @@
             $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
-                "searching": false,
-                "ordering": true,
+                "searching": true,
+                "ordering": false,
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,

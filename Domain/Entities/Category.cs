@@ -15,7 +15,6 @@ namespace Domain.Entities
 
 		public virtual ICollection<Category>? SubCategories { get; set; }
 
-
 		[JsonIgnore]
 		public virtual ICollection<Product>? Products { get; set; }
 

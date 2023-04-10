@@ -31,6 +31,9 @@ namespace Domain.Entities.Configuration
 
 			builder.Property(i => i.PaymentMethod)
                 .HasMaxLength(100);
-		}
+            builder.Property(i => i.CreatedAt)
+                .HasDefaultValueSql("GETDATE()");
+           
+        }
     }
 }

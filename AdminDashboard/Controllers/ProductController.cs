@@ -43,16 +43,6 @@ namespace AdminDashboard.Controllers
 
             return View(products);
         }
-
-            //[HttpGet]
-            //public ActionResult ProductImagesAndColors(int id)
-            //{
-            //    Product product = _context.Product.Include("ProductColors").Include("ProductImages").Single(p => p.Id == id);
-            //    ViewBag.Prd = product;
-            //    return View();
-            //}
-
-            // GET: ProductController/Create
             public ActionResult Create()
             {
                 ViewBag.brands = _context.Brand.ToList();
@@ -164,7 +154,29 @@ namespace AdminDashboard.Controllers
             public async Task<ActionResult> Edit(int id, ProductModel collection)
             {
                 var product = _context.Product.Include("Brand").Include("Category").Single(p => p.Id == id);
-                try
+            List<ProductImage> ProductImagess = new List<ProductImage>();
+            try
+            {
+                foreach (var file in collection.Images)
+                {
+                    string fileName = file.FileName;
+                    fileName = Path.GetFileName(fileName);
+                    string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
+                    var stream = new FileStream(uploadpath, FileMode.Create);
+                    string pathnew = "/ProductImages/" + fileName;
+                    await file.CopyToAsync(stream);
+                    ProductImagess.Add(new ProductImage()
+                    {
+                        ImagePath = pathnew
+                    });
+                }
+                ViewBag.Message = "File uploaded successfully.";
+            }
+            catch
+            {
+                ViewBag.Message = "Error while uploading the files.";
+            }
+            try
                 {
                     #region Update file Image
                     //string fileNameImage = collection.ImagePath.FileName;
@@ -213,7 +225,7 @@ namespace AdminDashboard.Controllers
                     product.Discount = collection.Discount;
                     product.Description = collection.Description;
                     product.DescriptionAr = collection.DescriptionAr;
-
+                    product.ProductImages = ProductImagess;
                     product.Category = cat;
                     product.Brand = brand;
                     product.Price = collection.Price;
@@ -320,7 +332,7 @@ namespace AdminDashboard.Controllers
 
             [HttpPost]
             [ValidateAntiForgeryToken]
-            public async Task<ActionResult> CreateImageeProduct(ProductImageesModel productImageModel, ProductModel productModel)
+            public async Task<IActionResult> CreateImageeProduct(ProductImageesModel productImageModel)//, ProductModel productModel)
             {
                 //var ImagePath = _context.ProductImages.Single(a => a.Id == productImageModel.Id);
                 var prodid = _context.Product.Include(p => p.ProductImages).Single(p => p.Id == productImageModel.ProductId);
@@ -330,6 +342,9 @@ namespace AdminDashboard.Controllers
                     List<ProductImage> ProductImagess = new List<ProductImage>();
                     try
                     {
+                   
+
+
 
                         foreach (var file in productImageModel.ImagePaths)
                         {
