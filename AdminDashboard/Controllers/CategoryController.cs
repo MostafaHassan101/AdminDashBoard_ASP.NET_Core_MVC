@@ -134,7 +134,7 @@ namespace AdminDashboard.Controllers
                 };
                await _context.Category.AddAsync(cat);
                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Category", new { id = newCategory.parentId });
             }
             catch
             {
