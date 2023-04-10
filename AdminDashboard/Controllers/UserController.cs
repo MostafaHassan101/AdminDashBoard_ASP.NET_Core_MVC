@@ -54,7 +54,7 @@ namespace AdminDashboard.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
-                    UserName = model.UserName,
+                    UserName = model.Email,
                 };
                 IdentityResult result = await usermanager.CreateAsync(user, model.Password);
 
@@ -138,7 +138,8 @@ namespace AdminDashboard.Controllers
                 }
                 else
                 {
-                    if(User.IsInRole("Admin"))
+               
+                    if (User.IsInRole("Admin"))
                     {
                         return RedirectToAction("Index", "Home");
                     }else

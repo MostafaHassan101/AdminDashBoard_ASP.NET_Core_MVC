@@ -7,7 +7,7 @@ namespace AdminDashboard.Models
 
         [Required]
         [Display(Name = "UserName")]
-        [MaxLength(15), MinLength(3)]
+      //  [MaxLength(15), MinLength(3)]
         public string UserName { get; set; }
 
         [Required]
