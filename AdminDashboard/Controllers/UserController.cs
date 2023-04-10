@@ -13,24 +13,20 @@ using System.Data;
 namespace AdminDashboard.Controllers
 {
 
-    //[Authorize(Roles = "Admin")]
-    //[Authorize]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly DContext context;
         UserManager<User> usermanager;
         SignInManager<User> SignInManager;
-        //RoleManager<IdentityRole> RoleManager;
         public UserController(DContext _context, UserManager<User> _usermanager, SignInManager<User> signInManager)
         {
-            usermanager= _usermanager;
-           context = _context;
+            usermanager = _usermanager;
+            context = _context;
             SignInManager = signInManager;
-            
+
         }
-
         // GET: UserController/Create Account
-
         public ActionResult Create()
         {
             return View();
@@ -58,7 +54,7 @@ namespace AdminDashboard.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
-                    UserName = model.UserName,
+                   // UserName = model.UserName,
                 };
                 IdentityResult result = await usermanager.CreateAsync(user, model.Password);
 
@@ -84,23 +80,13 @@ namespace AdminDashboard.Controllers
                         return View();
 
                     }
-                    // return RedirectToAction("UsersDetails", "User");
-                    return Ok();
+                    return RedirectToAction("Index", "Home");
+                 //   return Ok();
                 }
             }
         }
 
-
-
-
-
-
-
-
         // GET: UserController/Details/5
-        //   [Authorize]
-        // [Authorize(Roles = "Admin")]
-        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task< ActionResult> UsersDetails()
         {
@@ -120,10 +106,6 @@ namespace AdminDashboard.Controllers
             ViewBag.users = userss;
             return View();
         }
-
-
-
-
         // UserController/Login
 
         [AllowAnonymous]
@@ -136,6 +118,7 @@ namespace AdminDashboard.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> SignIn(LoginModel model)
         {
             if (ModelState.IsValid == false)
@@ -144,7 +127,8 @@ namespace AdminDashboard.Controllers
             }
             else
             {
-                var result =await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
+                
+                var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded == false)
                 {
@@ -154,7 +138,14 @@ namespace AdminDashboard.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Index", "Home");
+                    if(User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }else
+                    {
+                        ModelState.AddModelError("", "you are not admin");
+                        return View();
+                    }
 
                     //if (!string.IsNullOrEmpty(model.ReturnUrl))
                     //{
@@ -166,12 +157,8 @@ namespace AdminDashboard.Controllers
                     //}
                 }
             }
-                
+
         }
-
-
-
-
         // UserController/ Log out
         [HttpGet]
         public  async Task<IActionResult> SignOut()
@@ -181,10 +168,6 @@ namespace AdminDashboard.Controllers
             return RedirectToAction("SignIn");
 
         }
-
-
-
-    
 
         //  UserController/Edit
         public ActionResult Edit(int id)
@@ -207,10 +190,6 @@ namespace AdminDashboard.Controllers
             }
         }
 
-
-
-
-
         // UserController/Delete
         public async Task<ActionResult> Delete(long id)
         {
@@ -218,11 +197,9 @@ namespace AdminDashboard.Controllers
             if(user != null)
             {
                IdentityResult result= await usermanager.DeleteAsync(user);
-              //  context.SaveChanges();
                 if (result.Succeeded)
                 {
                     return RedirectToAction(nameof(UsersDetails));
-                   // return View("UsersDetails");
                 }else
                 {
                     foreach(var er in result.Errors)
@@ -234,12 +211,6 @@ namespace AdminDashboard.Controllers
 
             return RedirectToAction(nameof(UsersDetails));
         }
-
-
-
-
-
-
         // All Reviews & All Users
 
         [HttpGet]

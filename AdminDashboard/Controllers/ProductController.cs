@@ -1,19 +1,14 @@
 ﻿using AdminDashboard.Models;
 using Context;
 using Domain.Entities;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Contracts;
-using System.Drawing.Drawing2D;
-using System.IO;
-using System.Xml.Linq;
-using static Azure.Core.HttpHeader;
-using static System.Net.Mime.MediaTypeNames;
+using System.Data;
 
 namespace AdminDashboard.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
         private readonly DContext _context;
@@ -30,7 +25,7 @@ namespace AdminDashboard.Controllers
             var products = _context.Product.ToList();
             return View(products);
         }
-        
+
         [HttpGet]
         public ActionResult ProductImagesAndColors(int id)
         {
@@ -38,7 +33,7 @@ namespace AdminDashboard.Controllers
             ViewBag.Prd = product;
             return View();
         }
-        
+
         // GET: ProductController/Create
         public ActionResult Create()
         {
@@ -55,8 +50,8 @@ namespace AdminDashboard.Controllers
         {
             try
             {
-                Category cat= _context.Category.Single(c=>c.Id==collection.CategoryId);
-                Brand brand = _context.Brand.Single(b =>b.Id == collection.BrandId);
+                Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
+                Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
 
                 string fileNameImage = collection.ImagePath.FileName;
                 fileNameImage = Path.GetFileName(fileNameImage);
@@ -65,8 +60,10 @@ namespace AdminDashboard.Controllers
                 string path = "/ProductImages/" + fileNameImage;
                 await collection.ImagePath.CopyToAsync(streamoneImage);
 
+
+
                 ///////////////
-                
+
                 List<ProductImage> ProductImagess = new List<ProductImage>();
                 try
                 {
@@ -76,7 +73,7 @@ namespace AdminDashboard.Controllers
                         fileName = Path.GetFileName(fileName);
                         string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
                         var stream = new FileStream(uploadpath, FileMode.Create);
-                                                string pathnew = "/ProductImages/" + fileName;
+                        string pathnew = "/ProductImages/" + fileName;
                         await file.CopyToAsync(stream);
                         ProductImagess.Add(new ProductImage()
                         {
@@ -90,14 +87,14 @@ namespace AdminDashboard.Controllers
                     ViewBag.Message = "Error while uploading the files.";
                 }
                 ///////////////
-               
+
                 List<ProductColor> productColorss = new List<ProductColor>();
-                foreach(long c in collection.ProductColorsidsIds)
+                foreach (long c in collection.ProductColorsidsIds)
                 {
-                    ProductColor productColor=_context.ProductColors.Single(co=>co.Id==c);
+                    ProductColor productColor = _context.ProductColors.Single(co => co.Id == c);
                     productColorss.Add(productColor);
                 }
-               
+
                 Product product = new Product()
                 {
                     Name = collection.Name,
@@ -107,17 +104,17 @@ namespace AdminDashboard.Controllers
                     DescriptionAr = collection.DescriptionAr,
                     Category = cat,
                     Brand = brand,
-                    Price= collection.Price,
-                    ModelNumber= collection.ModelNumber,
-                    Quantity=collection.Quantity,
+                    Price = collection.Price,
+                    ModelNumber = collection.ModelNumber,
+                    Quantity = collection.Quantity,
                     ProductColors = productColorss,
                     ProductImages = ProductImagess,
-                    ImagePath= path,
+                    ImagePath = path,
 
                 };
-               await _context.Product.AddAsync(product);
-               await _context.SaveChangesAsync();
-               return RedirectToAction(nameof(Index));
+                await _context.Product.AddAsync(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
@@ -130,7 +127,7 @@ namespace AdminDashboard.Controllers
         {
             Product Product = _context.Product
                 .Include(p => p.Category)
-                .Include(p => p.Brand).Include(a=>a.ProductImages).Single(b => b.Id == id);
+                .Include(p => p.Brand).Include(a => a.ProductImages).Single(b => b.Id == id);
             var categories = _context.Category.Where(p => p.ParentCategory != null).ToList();
             var brands = _context.Brand.ToList();
             var ProductColors = _context.ProductColors.ToList();
@@ -192,7 +189,7 @@ namespace AdminDashboard.Controllers
 
                 Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
                 Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
-               
+
                 product.Name = collection.Name;
                 product.NameAr = collection.NameAr;
                 product.Discount = collection.Discount;
@@ -206,7 +203,7 @@ namespace AdminDashboard.Controllers
                 //string path = "" + fileNameImage;
                 //await collection.ImagePath.CopyToAsync(streamoneImage);
 
-                product.Category =cat;
+                product.Category = cat;
                 product.Brand = brand;
                 product.Price = collection.Price;
                 product.ModelNumber = collection.ModelNumber;
@@ -224,19 +221,19 @@ namespace AdminDashboard.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            var product = _context.Product.Single(a => a.Id == id) ;
-            ViewBag.product=product;
+            var product = _context.Product.Single(a => a.Id == id);
+            ViewBag.product = product;
             return View();
         }
 
         // POST: ProductController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task <ActionResult> Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
-                var product= _context.Product.Single(p=>p.Id== id);
+                var product = _context.Product.Single(p => p.Id == id);
                 _context.Product.Remove(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -249,9 +246,9 @@ namespace AdminDashboard.Controllers
 
 
         [HttpGet]
-        public  IActionResult Details(int id)
+        public IActionResult Details(int id)
         {
-			var prd = _context.Product.Include("ProductColors").Include("ProductImages").Include("ProductReview").Single(p => p.Id == id);
+            var prd = _context.Product.Include("ProductColors").Include("ProductImages").Include("ProductReview").Single(p => p.Id == id);
             ViewBag.Product = prd;
 
             var colors = prd.ProductColors;
@@ -272,7 +269,7 @@ namespace AdminDashboard.Controllers
 
         public ActionResult CreateColorProduct(long id)
         {
-            var prodid = _context.Product.Single(p =>p.Id == id);
+            var prodid = _context.Product.Single(p => p.Id == id);
             ViewBag.Product = prodid;
             ViewBag.ProductColors = _context.ProductColors.ToList();
             return View();
@@ -285,12 +282,12 @@ namespace AdminDashboard.Controllers
         {
             var color = _context.ProductColors.Single(a => a.Id == productColorModel.ColorId);
             var prodid = _context.Product.Include(p => p.ProductColors).Single(p => p.Id == productColorModel.prodid);
-                prodid.ProductColors.Add(color);
-                await _context.SaveChangesAsync();
+            prodid.ProductColors.Add(color);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
-        
+
+
         [HttpGet]
         public ActionResult DeleteColorProduct(int id, int Idcolor)
         {
