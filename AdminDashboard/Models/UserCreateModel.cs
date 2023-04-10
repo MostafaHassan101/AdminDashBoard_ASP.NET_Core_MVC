@@ -9,10 +9,8 @@ namespace AdminDashboard.Models
         public string FirstName { get; set; }
         [Required, MaxLength(200), MinLength(3), Display(Name = "Last Name")]
         public string LastName { get; set; }
-        [Required, MaxLength(15), MinLength(3)]
-        //[Display(Name = "User Name")]
-        //public string UserName { get; set; }
-        //[Required, EmailAddress]
+    
+        [Required, EmailAddress]
         [Display(Name = "Email Address")]
         public string Email { get; set; }
         [Required, MinLength(6), MaxLength(16)]
