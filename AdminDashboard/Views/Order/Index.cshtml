@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+
+    <link rel="stylesheet" href="~/css/FontSizeePage.css" />
+
 </head>
 <body class="hold-transition sidebar-mini">
 
@@ -47,23 +50,23 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                Customer Name
+                                            <th class="txtFont">
+                                              Customer Name
                                             </th>
-                                            <th>
+                                            <th class="txtFont">
                                               Mobile Number
                                             </th>
-                                            <th>
+                                            <th class="txtFont">
                                               Adress
                                             </th>
-                                            <th>
-                                                Order Discount
+                                            <th class="txtFont d-none d-sm-table-cell d-md-table-cell">
+                                              Order Discount
                                             </th>
-                                            <th>
-                                                Order PaymentMethod
+                                            <th class="txtFont d-none d-sm-table-cell d-md-table-cell">
+                                              Order PaymentMethod
                                             </th>
-                                            <th>
-                                                Order TotalPrice
+                                            <th class="txtFont">
+                                              Order TotalPrice
                                             </th>
                                         </tr>
                                     </thead>
@@ -71,26 +74,26 @@
                                         @foreach (var item in Model)
                                         {
                                             <tr>
-                                                <td>
+                                                <td class="txtFont">
                                                    @item.User.FirstName  @item.User.LastName 
                                                 </td>
-                                                <td>
+                                                <td class="txtFont">
                                                     @Html.DisplayFor(modelItem => item.UserPhone)
                                                 </td>
-                                                <td style="height:2em; overflow:hidden">
+                                                <td style="height:2em; overflow:hidden" class="txtFont">
                                                     @Html.DisplayFor(modelItem => item.Address)
                                                 </td>
-                                                <td>
+                                                <td class="txtFont d-none d-sm-table-cell d-md-table-cell">
                                                     @Html.DisplayFor(modelItem => item.Discount)
                                                 </td>
-                                                <td>
+                                                <td class="txtFont d-none d-sm-table-cell d-md-table-cell">
                                                     @Html.DisplayFor(modelItem => item.PaymentMethod)
                                                 </td>
-                                                <td>
+                                                <td class="txtFont">
                                                     @Html.DisplayFor(modelItem => item.TotalPrice)
                                                 </td>
-                                                <td>
-                                                    <a class="btn btn-outline-info" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                                <td >
+                                                    <a class="btn btn-outline-info" class="txtFont" asp-action="Details" asp-route-id="@item.Id">Details</a>
                                                 </td>
                                             </tr>
                                         }
