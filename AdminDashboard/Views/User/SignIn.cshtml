@@ -19,33 +19,37 @@
     <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
     <style>
-.divs{
-  background: url(https://images.wallpaperscraft.com/image/single/black_light_dark_73356_1920x1080.jpg);
-  width:100%;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-}
-.sgin{
-  font-family: 'Courier New', Courier, monospace;
-  background:url('https://media.giphy.com/media/FE0WTM8BG754I/giphy.gif') center center no-repeat;
-  -webkit-background-clip: text;
-  font-size:4rem;
-  letter-spacing:10px;
-  background-size:cover;
-  margin:0px;
-  color:transparent;
-}
+        .divs {
+            background: url(https://images.wallpaperscraft.com/image/single/black_light_dark_73356_1920x1080.jpg);
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .sgin {
+            font-family: 'Courier New', Courier, monospace;
+            background: url('https://media.giphy.com/media/FE0WTM8BG754I/giphy.gif') center center no-repeat;
+            background-size: auto;
+            background-clip: border-box;
+            -webkit-background-clip: text;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            background-size: cover;
+            margin: -10px;
+            color: transparent;
+            font-size: larger;
+        }
     </style>
 </head>
 <body class="divs hold-transition login-page" >
-	<h1 class="sgin"><b>Sgin In Noon</b></h1>
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <h1 class="text-warning"><img src="~/Icon.ico" style="width:40px;height:40px;"/> Noon</h1>
+                <img src="~/Icon.ico" style="width:40px;height:40px;" /><br />
+                <b class="sgin">Sgin In Noon</b>
             </div>
             <div class="card-body">
                 <form asp-action="SignIn">

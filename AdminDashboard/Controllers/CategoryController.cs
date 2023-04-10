@@ -18,9 +18,13 @@ namespace AdminDashboard.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter)
         {
             var categories = await _context.Category.ToListAsync();
+            if (filter != null)
+            {
+                categories = categories.Where(c => c.Name.ToLower().Contains(filter.ToLower())).ToList();
+            }
             return View(categories);
         }
 
@@ -41,14 +45,14 @@ namespace AdminDashboard.Controllers
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CategoryModel newCategory)
+        public async Task<IActionResult> Create(CategoryModel newCategory)
         {
             try
             {
@@ -57,8 +61,8 @@ namespace AdminDashboard.Controllers
                     Name = newCategory.Name,
                     NameAr = newCategory.NameAr
                 };
-                _context.Category.Add(cat);
-                _context.SaveChanges();
+               await _context.Category.AddAsync(cat);
+               await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -67,7 +71,7 @@ namespace AdminDashboard.Controllers
             }
         }
         [HttpGet]
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             Category category = _context.Category.Single(c => c.Id == id);
             return View(category);
@@ -76,7 +80,7 @@ namespace AdminDashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, CategoryModel categoryModel)
+        public async Task <IActionResult> Edit(int id, CategoryModel categoryModel)
         {
             try
             {
@@ -84,7 +88,7 @@ namespace AdminDashboard.Controllers
                 category.Name = categoryModel.Name;
                 category.NameAr = categoryModel.NameAr;
                 _context.Category.Update(category);
-                _context.SaveChanges();
+               await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -93,15 +97,15 @@ namespace AdminDashboard.Controllers
             }
         }
 
-        [HttpGet]
+      
 
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 Category category =  _context.Category.Single(c => c.Id == id);
                 _context.Category.Remove(category);
-                 _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception )
@@ -111,7 +115,7 @@ namespace AdminDashboard.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddSubCategory(int id)
+        public  IActionResult AddSubCategory(int id)
         {
             var parentCategory = _context.Category.Single(c => c.Id == id);
             ViewBag.parentCategory = parentCategory;
@@ -121,7 +125,7 @@ namespace AdminDashboard.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddSubCategory(CategoryModel newCategory)
+        public async Task <IActionResult> AddSubCategory(CategoryModel newCategory)
         {
             try
             {
@@ -131,9 +135,9 @@ namespace AdminDashboard.Controllers
                     NameAr = newCategory.NameAr,
                     ParentCategory = _context.Category.Single(c => c.Id == newCategory.parentId)
                 };
-                _context.Category.Add(cat);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+               await _context.Category.AddAsync(cat);
+               await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Category", new { id = newCategory.parentId });
             }
             catch
             {

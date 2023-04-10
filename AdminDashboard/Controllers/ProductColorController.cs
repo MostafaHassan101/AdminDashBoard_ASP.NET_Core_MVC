@@ -63,17 +63,6 @@ namespace AdminDashboard.Controllers
         }
 
 
-        // GET: ProductColorController1/Delete/5
-        public ActionResult Delete(int id)
-        {
-            ProductColor productColor1 = _context.ProductColors.Single(b => b.Id == id);
-            ViewBag.ProductColors = productColor1;
-            return View();
-        }
-
-        // POST: ProductColorController1/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, ProductColor productColor)
         {
             try

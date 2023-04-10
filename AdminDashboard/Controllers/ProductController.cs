@@ -20,20 +20,38 @@ namespace AdminDashboard.Controllers
 
         // GET: ProductController
         [HttpGet]
-        public IActionResult Index(int PageIndex = 1, int PageSize = 3)
+        public IActionResult Index(string filter, int PageIndex = 1, int PageSize = 3 )
         {
             var products = _context.Product.ToList();
+            List<Product> filtered = new List<Product>();
+          
+            if (filter != null)
+            {
+               foreach(var product in products)
+                {
+
+                    if (product.Name.ToLower().Contains(filter.ToLower()))
+                    {
+                        filtered.Add(product);
+                    }
+
+                }
+                return View(filtered);
+
+                //products = filtered;
+            }
+           
             return View(products);
-        }
-
-        [HttpGet]
-        public ActionResult ProductImagesAndColors(int id)
-        {
-            Product product = _context.Product.Include("ProductColors").Include("ProductImages").Single(p => p.Id == id);
-            ViewBag.Prd = product;
-            return View();
-        }
-
+        
+        
+        //[HttpGet]
+        //public ActionResult ProductImagesAndColors(int id)
+        //{
+        //    Product product = _context.Product.Include("ProductColors").Include("ProductImages").Single(p => p.Id == id);
+        //    ViewBag.Prd = product;
+        //    return View();
+        //}
+        
         // GET: ProductController/Create
         public ActionResult Create()
         {
@@ -126,8 +144,10 @@ namespace AdminDashboard.Controllers
         public ActionResult Edit(int id)
         {
             Product Product = _context.Product
-                .Include(p => p.Category)
-                .Include(p => p.Brand).Include(a => a.ProductImages).Single(b => b.Id == id);
+
+                .Include(p => p.Category).Include(a => a.ProductColors)
+                .Include(p => p.Brand).Include(a=>a.ProductImages).Single(b => b.Id == id);
+
             var categories = _context.Category.Where(p => p.ParentCategory != null).ToList();
             var brands = _context.Brand.ToList();
             var ProductColors = _context.ProductColors.ToList();
@@ -135,8 +155,6 @@ namespace AdminDashboard.Controllers
             ViewBag.categories = categories;
             ViewBag.Product = Product;
             ViewBag.ProductColors = ProductColors;
-            Product product = _context.Product.Include("ProductColors").Include("ProductImages").Single(p => p.Id == id);
-            ViewBag.Prd = product;
             return View();
         }
 
@@ -196,14 +214,7 @@ namespace AdminDashboard.Controllers
                 product.Description = collection.Description;
                 product.DescriptionAr = collection.DescriptionAr;
 
-                //string fileNameImage = collection.ImagePath.FileName;
-                //fileNameImage = Path.GetFileName(fileNameImage);
-                //string uploadpathImage = Path.Combine(Directory.GetCurrentDirectory(), "", fileNameImage);
-                //var streamoneImage = new FileStream(uploadpathImage, FileMode.Create);
-                //string path = "" + fileNameImage;
-                //await collection.ImagePath.CopyToAsync(streamoneImage);
-
-                product.Category = cat;
+                product.Category =cat;
                 product.Brand = brand;
                 product.Price = collection.Price;
                 product.ModelNumber = collection.ModelNumber;
@@ -218,18 +229,9 @@ namespace AdminDashboard.Controllers
             }
         }
 
-        // GET: ProductController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            var product = _context.Product.Single(a => a.Id == id);
-            ViewBag.product = product;
-            return View();
-        }
 
-        // POST: ProductController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(int id, IFormCollection collection)
+        
+        public async Task <ActionResult> Delete(int id)
         {
             try
             {
@@ -282,41 +284,28 @@ namespace AdminDashboard.Controllers
         {
             var color = _context.ProductColors.Single(a => a.Id == productColorModel.ColorId);
             var prodid = _context.Product.Include(p => p.ProductColors).Single(p => p.Id == productColorModel.prodid);
-            prodid.ProductColors.Add(color);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+                prodid.ProductColors.Add(color);
+                await _context.SaveChangesAsync();
+            return RedirectToAction("Edit", "Product", new { id = prodid.Id });
         }
 
 
-        [HttpGet]
-        public ActionResult DeleteColorProduct(int id, int Idcolor)
+        public async Task<ActionResult> DeleteColorProduct(long id, long prd)
         {
-            var Prod = _context.Product.Include(p => p.ProductColors).Single(p => p.Id == Idcolor);
-            ViewBag.Product = Prod;
-            var color = _context.ProductColors.FirstOrDefault(c => c.Id == Idcolor);
-            ViewBag.ProductColors = color;
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteColorProduct(int id, ProductColor productColor)
-        {
+            var product = _context.Product.Include(p => p.ProductColors).Single(p => p.Id == prd);
+            var color = _context.ProductColors.Single(c => c.Id == id);
             try
             {
-                var product = _context.Product.Single(p => p.Id == id);
-                product.ProductColors.Remove(productColor);
+                product.ProductColors.Remove(color);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Product", new { id = prd });
             }
             catch
             {
                 return View();
             }
         }
-
-
 
 
         //Product Images Create and Delete
@@ -379,36 +368,22 @@ namespace AdminDashboard.Controllers
 
         }
 
-        [HttpGet]
-        public ActionResult DeleteImageProduct(int id, int Idcolor)
-        {
-            var Prod = _context.Product.Include(p => p.ProductColors).Where(p => p.Id != id).Single(p => p.Id == p.Id);/*Include(p => p.ProductColors).Single(p => p.Id == productColorModel.prodid)*/
-            ViewBag.Product = Prod;
-            var color = _context.ProductColors.FirstOrDefault(c => c.Id == Idcolor);
-            ViewBag.ProductColors = color;
-            return View();
-        }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteImageProduct(int id, ProductColor productColor)
+        public async Task<ActionResult> DeleteImageProduct(long id, long prd)
         {
+            var product = _context.Product.Include(p => p.ProductImages).Single(p => p.Id == prd);
+            var Image = _context.ProductImages.Single(c => c.Id == id);
             try
             {
-                var product = _context.Product.Single(p => p.Id == id);
-                product.ProductColors.Remove(productColor);
+                product.ProductImages.Remove(Image);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Product", new { id = prd });
             }
             catch
             {
                 return View();
             }
         }
-
-
-
-
-    }
+   }
 }

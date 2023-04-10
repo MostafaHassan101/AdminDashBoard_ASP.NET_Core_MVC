@@ -18,7 +18,7 @@ namespace AdminDashboard.Controllers
             _context = context;
         }
         // GET: OrderController
-        public ActionResult Index()
+        public IActionResult Index()
         {
             var orders = _context.Order.Include(o => o.User).Include(o => o.OrderItems).ToList();
 
@@ -26,34 +26,14 @@ namespace AdminDashboard.Controllers
         }
 
         // GET: OrderController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             var orderitems = _context.OrderDetails
                 .Include("Order").Include("Product").Where(o => o.Order.Id == id);
             ViewBag.orderitems = orderitems;
             return View();
         }
-
-        // GET: OrderController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: OrderController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+       
 
         // GET: OrderController/Edit/5
         public ActionResult Edit(int id)
@@ -75,6 +55,8 @@ namespace AdminDashboard.Controllers
                 return View();
             }
         }
+
+
 
         // GET: OrderController/Delete/5
         public ActionResult Delete(int id)
