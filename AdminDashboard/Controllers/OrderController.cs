@@ -1,10 +1,13 @@
 ﻿using Context;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace AdminDashboard.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class OrderController : Controller
       
     {

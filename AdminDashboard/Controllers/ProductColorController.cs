@@ -1,11 +1,14 @@
 ﻿using AdminDashboard.Models;
 using Context;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace AdminDashboard.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ProductColorController : Controller
     {
         private readonly DContext _context;
