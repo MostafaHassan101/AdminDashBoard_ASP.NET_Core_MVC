@@ -54,7 +54,7 @@ namespace AdminDashboard.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
-                   // UserName = model.UserName,
+                    UserName = model.UserName,
                 };
                 IdentityResult result = await usermanager.CreateAsync(user, model.Password);
 
