@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Order Details";
     var orderitems = ViewBag.orderitems;
+    var orderId = ViewBag.orderid;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +71,13 @@
                                 </table>
                             </div>
                             <div class="card-footer">
-                                <a asp-controller="Order" asp-action="Index" class="btn btn-secondary" style="float:right">Back to List</a>
+                                <a asp-controller="Order" asp-action="Index" class="btn btn-secondary mx-1" style="float:right">Back to List</a>
+                                <a asp-controller="Order" asp-action="AcceptOrder" asp-route-id="@orderId" class="btn btn-primary mx-1" style="float:right">Accept Oder</a>
+                                <a asp-controller="Order" asp-action="Delete"
+                                asp-route-id="@orderId" class="btn btn-danger mx-1"
+                                style="float:right"
+                                   onclick="return confirm('Are you sure you want to delete this Order)">Delete Order</a>
+
                             </div>
                         </div>
                     </div>

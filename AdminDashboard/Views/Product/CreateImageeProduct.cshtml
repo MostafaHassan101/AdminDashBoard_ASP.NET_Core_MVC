@@ -29,7 +29,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li class="breadcrumb-item active">Create Color</li>
+                            <li class="breadcrumb-item active">Create Image</li>
                         </ol>
                     </div>
                 </div>
@@ -41,9 +41,9 @@
                     <div class="col-md-12">
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Create Color</h3>
+                                <h3 class="card-title">Create Image</h3>
                             </div>
-                            <form asp-action="CreateImageeProduct">
+                            <form asp-action="CreateImageeProduct" enctype=" multipart /form-data">
                                 <div class="card-body">
                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                     <div class="form-group">
@@ -52,10 +52,12 @@
                                             <option value="@prdid.Id" selected hidden>@prdid.Name</option>
                                         </select>
                                     </div>
+
+
                                     <div class="form-group">
-                                        <label asp-for="ImagePath" class="form-control " for="exampleInputProductimage">Product Images</label>
-                                        <input asp-for="ImagePath" type="file" multiple class="form-control btn btn-success" id="exampleInputProductimage" required />
-                                        <span asp-validation-for="ImagePath" class="text-danger"></span>
+                                        <label asp-for="ImagePaths" class="form-control " for="exampleInputProductimage">Product Images</label>
+                                        <input asp-for="ImagePaths" type="file" multiple class="form-control btn btn-success" id="exampleInputProductimage" required />
+                                        <span asp-validation-for="ImagePaths" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="card-footer">

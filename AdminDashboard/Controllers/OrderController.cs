@@ -20,48 +20,76 @@ namespace AdminDashboard.Controllers
         // GET: OrderController
         public IActionResult Index()
         {
-            var orders = _context.Order.Include(o => o.User).Include(o => o.OrderItems).ToList();
+            var orders = _context.Order
+                .Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .OrderBy(o=>o.CreatedAt).ToList();
+
+            return View(orders);
+        }
+
+        // GET:Pending Order
+        [HttpGet]
+        public IActionResult PendingOrders()
+        {
+            var orders = _context.Order.Include(o => o.User)
+                .Include(o => o.OrderItems)
+                .Where(o=>o.Status== "Processing")
+                .OrderBy(o=>o.CreatedAt)
+                .ToList();
 
             return View(orders);
         }
 
         // GET: OrderController/Details/5
-        public IActionResult Details(int id)
+        public IActionResult Details(long id)
         {
             var orderitems = _context.OrderDetails
                 .Include("Order").Include("Product").Where(o => o.Order.Id == id);
             ViewBag.orderitems = orderitems;
+            ViewBag.orderid=id;
             return View();
         }
-       
+      
 
-        // GET: OrderController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: OrderController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+       // [HttpPost]
+        public async Task<IActionResult>AcceptOrder(long id)
         {
             try
             {
+                var order = _context.Order.Single(o => o.Id == id);
+                order.Status = "Shipping";
+                _context.Update(order);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
                 return View();
             }
+           
         }
 
 
-
         // GET: OrderController/Delete/5
-        public ActionResult Delete(int id)
+
+        public async Task <IActionResult> Delete(int id)
         {
-            return View();
+            try
+            {
+                var order = await _context.Order.SingleAsync(o => o.Id == id);
+                _context.Order.Remove(order);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+
+          
+           
         }
 
         // POST: OrderController/Delete/5
@@ -78,5 +106,6 @@ namespace AdminDashboard.Controllers
                 return View();
             }
         }
+      
     }
 }

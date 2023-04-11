@@ -1,37 +1,40 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
 
 namespace Context
 {
-    public static class RelationsMapping
+	public static class RelationsMapping
     {
         public static void MapRelations(this ModelBuilder modelBuilder)
         {
             /// Product Relations
-            modelBuilder.Entity<Product>()
-                .HasOne(p => p.Category);
+            //modelBuilder.Entity<Product>()
+            //    .HasOne(p => p.Category);
             
-            modelBuilder.Entity<Product>()
-				.HasOne(p => p.Brand);
-
+    //        modelBuilder.Entity<Product>()
+				//.HasOne(p => p.Brand);
+            //poductImages
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.ProductImages)
                 .WithOne(i => i.Product)
+                .HasForeignKey( p => p.ProductId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<Product>()
                 .HasMany(p => p.ProductReview)
                 .WithOne(r => r.Product)
+                .HasForeignKey(r=>r.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+         
             /// Category Relations
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.Products)
                 .WithOne(p => p.Category)
                 .OnDelete(DeleteBehavior.Cascade);
-              
 
+              
+            //subCategory
             modelBuilder.Entity<Category>()
                 .HasMany(c => c.SubCategories)
                 .WithOne(c => c.ParentCategory)
@@ -43,30 +46,26 @@ namespace Context
                 .WithOne(p => p.Brand)
 				.OnDelete(DeleteBehavior.Cascade);
 
-            /// Order Relations
-            modelBuilder.Entity<Order>()
-				.HasOne(o => o.User);
+
+ 
 
             modelBuilder.Entity<Order>()
-                .HasMany(o => o.OrderItems)
-                .WithOne(oi => oi.Order)
-				.OnDelete(DeleteBehavior.Cascade);
+            .HasMany(o => o.OrderItems)
+            .WithOne(i => i.Order)
+            .HasForeignKey(i => i.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<WishList>()
-				.HasMany(w => w.Products)
-				.WithOne(p => p.WishList)
-                .OnDelete(DeleteBehavior.NoAction);
 
-			/// ProductReview Relations
-             modelBuilder.Entity<Product>()
-                .HasMany(r => r.ProductReview)
-                .WithOne(p => p.Product);
+            modelBuilder.Entity<Product>()
+            .HasMany(p => p.WishLists)
+            .WithMany(w => w.Products);
 
-            /// User Relations
+
             modelBuilder.Entity<User>()
-                .HasMany(u => u.Orders)
-                .WithOne(o => o.User)
-				.OnDelete(DeleteBehavior.Cascade);
+           .HasMany(u => u.Orders)
+           .WithOne(r => r.User)
+           .HasForeignKey(o=>o.UserId)
+           .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>()
 				.HasMany(u => u.Reviews)
@@ -74,15 +73,16 @@ namespace Context
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>()
-                .HasOne(b => b.WishList)
-                .WithOne(i => i.User)
-			    .HasForeignKey<WishList>(b => b.UserId);
+                        .HasOne(b => b.WishList)
+                        .WithOne(i => i.User)
+			            .HasForeignKey<WishList>(b => b.UserId)
+                        .OnDelete(DeleteBehavior.Cascade);
 
           
             modelBuilder.Entity<Product>()
-			    .HasOne(b => b.OrderItems)
-			    .WithOne(i => i.Product)
-			    .HasForeignKey<OrderItems>(b => b.ProductId);
+			.HasOne(b => b.OrderItems)
+			.WithOne(i => i.Product)
+			.HasForeignKey<OrderItems>(b => b.ProductId);
 
             modelBuilder.Entity<OrderItems>()
                 .HasIndex(o => o.ProductId)

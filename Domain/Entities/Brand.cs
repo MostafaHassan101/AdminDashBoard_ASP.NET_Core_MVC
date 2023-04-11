@@ -10,5 +10,6 @@
 
         public virtual ICollection<Product>? Products { get; set; }
 
+      
     }
 }

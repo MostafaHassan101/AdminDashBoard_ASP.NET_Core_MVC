@@ -31,6 +31,11 @@ namespace Context
             new ProductColorConfiguration().Configure(modelBuilder.Entity<ProductColor>());
             base.OnModelCreating(modelBuilder);
         }
+        //      protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //      {
+        //          options.UseSqlServer(
+        //          "Data Source=DESKTOP-K0QTQH2\\SQLEXPRESS01;Initial Catalog = Noon;Integrated Security=True;Persist Security Info=False;Pooling=False;Multiple Active Result Sets=False;Encrypt=False;Trust Server Certificate=False");
+        //}
         public DContext(DbContextOptions<DContext> options) : base(options)
         {
 

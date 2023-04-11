@@ -15,8 +15,13 @@ namespace Domain.Entities.Configuration
                 .IsRequired()
                 .ValueGeneratedOnAdd();
 
+            //builder.Property(r => r.UserId).IsRequired();
+            //builder.Property(r => r.ProductId).IsRequired();
             builder.Property(r => r.Review)
                 .HasMaxLength(500);
+
+            //builder.Property(r => r.Rate).HasDefaultValue();
+
 
         }
     }

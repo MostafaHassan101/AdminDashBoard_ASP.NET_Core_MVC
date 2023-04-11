@@ -20,7 +20,7 @@ namespace AdminDashboard.Controllers
 
         public async Task<IActionResult> Index(string filter)
         {
-            var categories = await _context.Category.ToListAsync();
+            var categories = await _context.Category.Where(c => c.ParentCategory == null).ToListAsync();
             if (filter != null)
             {
                 categories = categories.Where(c => c.Name.ToLower().Contains(filter.ToLower())).ToList();
