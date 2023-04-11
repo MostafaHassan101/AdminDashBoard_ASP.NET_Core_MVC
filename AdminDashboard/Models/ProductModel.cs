@@ -28,7 +28,7 @@ namespace AdminDashboard.Models
         public long? BrandId { get; set; }
   
         public List<IFormFile>Images { get; set; }
-        public virtual ICollection<long> ProductColorsidsIds { get; set; }
+        public virtual ICollection<long>? ProductColorsidsIds { get; set; }
 
     }
 }
