@@ -1,10 +1,15 @@
 ﻿using AdminDashboard.Models;
 using Context;
 using Domain.Entities;
+using Firebase.Auth;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.IO;
+using System.Diagnostics;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace AdminDashboard.Controllers
 {
@@ -12,11 +17,17 @@ namespace AdminDashboard.Controllers
     public class ProductController : Controller
     {
         private readonly DContext _context;
+        private static string apiKey = "AIzaSyDttwSjeeEh7C3nfvVm7syIMvbx36_vHkg";
+        private static string bucket = "noon-ada7a.appspot.com";       
+        private static string authEmail = "mostafahassan157716@gmail.com";
+        private static string authPass = "mostafahassan157716";
+         
 
         public ProductController(DContext context)
         {
             _context = context;
         }
+        
 
         // GET: ProductController
         [HttpGet]
@@ -51,41 +62,59 @@ namespace AdminDashboard.Controllers
                 return View();
             }
 
-            // POST: ProductController/Create
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public async Task<ActionResult> Create(ProductModel collection)
+        // POST: ProductController/Create
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(ProductModel collection)
+        {
+            try
             {
-                try
-                {
-                    Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
-                    Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
+                Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
+                Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
+                string ImageName = Guid.NewGuid().ToString() + Path.GetExtension(collection.ImagePath.FileName);
 
-                    string fileNameImage = collection.ImagePath.FileName;
-                    fileNameImage = Path.GetFileName(fileNameImage);
-                    string uploadpathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileNameImage);
-                    var streamoneImage = new FileStream(uploadpathImage, FileMode.Create);
-                    string path = "/ProductImages/" + fileNameImage;
-                    await collection.ImagePath.CopyToAsync(streamoneImage);
+                var image = collection.ImagePath;
+                var stream = image.OpenReadStream();
+                //authentication
+                var auth = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
+                var a = await auth.SignInWithEmailAndPasswordAsync(authEmail, authPass);
 
+                var firebaseStorageTask = new FirebaseStorage(
+                    bucket,
+                     new FirebaseStorageOptions
+                     {
+                         AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                         ThrowOnCancel = false,
+                     })
+                    .Child("Images")
+                    .Child(ImageName)
+                    .PutAsync(stream);
+                var imageUrl = await firebaseStorageTask;
+                stream.Close();
 
-
-                    ///////////////
-
-                    List<ProductImage> ProductImagess = new List<ProductImage>();
+                List<ProductImage> ProductImagess = new List<ProductImage>();
                     try
                     {
                         foreach (var file in collection.Images)
                         {
-                            string fileName = file.FileName;
-                            fileName = Path.GetFileName(fileName);
-                            string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
-                            var stream = new FileStream(uploadpath, FileMode.Create);
-                            string pathnew = "/ProductImages/" + fileName;
-                            await file.CopyToAsync(stream);
+                            string imageName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                            var stream1 = file.OpenReadStream();
+                            var firebaseStorageTask1 = new FirebaseStorage(
+                            bucket,
+                             new FirebaseStorageOptions
+                             {
+                                 AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                                 ThrowOnCancel = false,
+                             })
+                            .Child("Images")
+                            .Child(imageName)
+                            .PutAsync(stream1);
+                            var imageUrl1 = await firebaseStorageTask1;
+
                             ProductImagess.Add(new ProductImage()
-                            {
-                                ImagePath = pathnew
+                                {
+                                    ImagePath = imageUrl1
                             });
                         }
                         ViewBag.Message = "File uploaded successfully.";
@@ -103,23 +132,25 @@ namespace AdminDashboard.Controllers
                         productColorss.Add(productColor);
                     }
 
-                    Product product = new Product()
-                    {
-                        Name = collection.Name,
-                        NameAr = collection.NameAr,
-                        Discount = collection.Discount,
-                        Description = collection.Description,
-                        DescriptionAr = collection.DescriptionAr,
-                        Category = cat,
-                        Brand = brand,
-                        Price = collection.Price,
-                        ModelNumber = collection.ModelNumber,
-                        Quantity = collection.Quantity,
-                        ProductColors = productColorss,
-                        ProductImages = ProductImagess,
-                        ImagePath = path,
+                Product product = new Product()
+                {
+                    Name = collection.Name,
+                    NameAr = collection.NameAr,
+                    Discount = collection.Discount,
+                    Description = collection.Description,
+                    DescriptionAr = collection.DescriptionAr,
+                    Category = cat,
+                    Brand = brand,
+                    Price = collection.Price,
+                    ModelNumber = collection.ModelNumber,
+                    Quantity = collection.Quantity,
+                    ProductColors = productColorss,
+                    ProductImages = ProductImagess,
+                    ImagePath = imageUrl,
+                    //ImagePath = fileupload.FileName
 
-                    };
+
+                };
                     await _context.Product.AddAsync(product);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -134,7 +165,6 @@ namespace AdminDashboard.Controllers
             public ActionResult Edit(int id)
             {
                 Product Product = _context.Product
-
                     .Include(p => p.Category).Include(a => a.ProductColors)
                     .Include(p => p.Brand).Include(a => a.ProductImages).Single(b => b.Id == id);
 
@@ -171,20 +201,26 @@ namespace AdminDashboard.Controllers
             {
                 foreach (var file in collection.Images)
                 {
-                    string fileName = file.FileName;
-                    fileName = Path.GetFileName(fileName);
-                    string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
-                    var stream = new FileStream(uploadpath, FileMode.Create);
-                    string pathnew = "/ProductImages/" + fileName;
-                    await file.CopyToAsync(stream);
-                    product.AddImage(new ProductImage()
+                    string imageName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    var stream = file.OpenReadStream();
+                    //authentication
+                    var auth = new FirebaseAuthProvider(new FirebaseConfig(apiKey));
+                    var a = await auth.SignInWithEmailAndPasswordAsync(authEmail, authPass);
+
+                    var firebaseStorageTask = new FirebaseStorage( bucket,
+                     new FirebaseStorageOptions
+                     {
+                         AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                         ThrowOnCancel = false,
+                     })
+                    .Child("Images")
+                    .Child(imageName)
+                    .PutAsync(stream);
+                    var imageUrl = await firebaseStorageTask;
+                    ProductImagess.Add(new ProductImage()
                     {
-                        ImagePath = pathnew
+                        ImagePath = imageUrl
                     });
-                    //ProductImagess.Add(new ProductImage()
-                    //{
-                    //    ImagePath = pathnew
-                    //});
                 }
                 
                 ViewBag.Message = "File uploaded successfully.";

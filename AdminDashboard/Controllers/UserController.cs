@@ -13,7 +13,7 @@ using System.Data;
 namespace AdminDashboard.Controllers
 {
 
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private readonly DContext context;
