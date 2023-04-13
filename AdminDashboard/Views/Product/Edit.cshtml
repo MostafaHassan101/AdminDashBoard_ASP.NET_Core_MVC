@@ -69,76 +69,7 @@
                                     <img src="@product.ImagePath" class="product-image" style="height: 28em !important;width: 80%;" alt="Product Image">
                                 </div>
                             </div>
-                            <div class="row">
-                                <h4 class="col-3 col-lg-3 ">Images</h4>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card card-default">
-                                            <div class="card-body">
-                                                <label asp-for="Images" class="control-label" for="exampleInputImages">Upload Images</label>
-                                                <div id="actions" class="row">
-                                                    <div class="col-lg-8">
-                                                        <div class="btn-group w-100">
-                                                            <span class="btn btn-success col-lg-8">
-                                                                <input type="file" asp-for="Images" class="form-control btn btn-success" multiple id="exampleInputImages" style="font-size:larger;" required />
-                                                            </span>
-                                                            <button type="submit" class="btn btn-primary col start" hidden>
-                                                                <i class="fas fa-upload"></i>
-                                                                <span>Start upload Images</span>
-                                                            </button>
-                                                            <button type="reset" class="btn btn-warning col cancel col-lg-4">
-                                                                <i class="fas fa-times-circle"></i>
-                                                                <span>Cancel All Images</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4 d-flex align-items-center">
-                                                        <div class="fileupload-process w-100">
-                                                            <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                                                <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="table table-striped files" id="previews" hidden>
-                                                    <div id="template" class="row mt-2">
-                                                        <div class="col-auto">
-                                                            <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                                                        </div>
-                                                        <div class="col d-flex align-items-center">
-                                                            <p class="mb-0">
-                                                                <span class="lead" data-dz-name></span>
-                                                                (<span data-dz-size></span>)
-                                                            </p>
-                                                            <strong class="error text-danger" data-dz-errormessage></strong>
-                                                        </div>
-                                                        <div class="col-4 d-flex align-items-center">
-                                                            <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                                                <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto d-flex align-items-center">
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-primary start" hidden>
-                                                                    <i class=""></i>
-                                                                    <span>Upload Image</span>
-                                                                </button>
-                                                                <button data-dz-remove class="btn btn-danger delete">
-                                                                    <i class="fas fa-trash"></i>
-                                                                    <span>Delete Image</span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span asp-validation-for="Images"></span>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                             @*   <a asp-action="CreateImageeProduct" asp-route-id="@product.Id" class="btn btn-outline-success text-black col-6 col-lg-3 txtFont">Add Images</a>*@
-                            </div>
+                            
                             <div class="col-12 product-image-thumbs" style="margin-top:15px">
                                 @foreach (var item in product.ProductImages)
                                 {
@@ -152,10 +83,7 @@
                                 }
                             </div>
                             <br /><br />
-                            <div class="row">
-                                <h4 class="col-3 col-lg-3 ">Colors</h4>
-                                <a asp-action="CreateColorProduct" asp-route-id="@product.Id" class="btn btn-outline-success col-6 col-lg-3   text-black txtFont" >Add Colors</a>
-                            </div>
+                            
                             <div class="col-12 product-image-thumbs" style="margin-top:15px">
                                 @foreach (var item in product.ProductColors)
                                 {
@@ -235,6 +163,87 @@
                                                 <option value="@p.Id">@p.Name</option>
                                             }
                                         </select>
+                                    </div>
+                                    <div class="row">
+                                        <h4 class="col-3 col-lg-3 ">Images</h4>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card card-default">
+                                                    <div class="card-body">
+                                                        <label asp-for="Images" class="control-label" for="exampleInputImages">Upload Images</label>
+                                                        <div id="actions" class="row">
+                                                            <div class="col-lg-8">
+                                                                <div class="btn-group w-100">
+                                                                    <span class="btn btn-success col-lg-8">
+                                                                        <input type="file" asp-for="Images" class="form-control btn btn-success" multiple id="exampleInputImages" style="font-size:larger;"/>
+                                                                    </span>
+                                                                    <button type="submit" class="btn btn-primary col start" hidden>
+                                                                        <i class="fas fa-upload"></i>
+                                                                        <span>Start upload Images</span>
+                                                                    </button>
+                                                                    <button type="reset" class="btn btn-warning col cancel col-lg-4">
+                                                                        <i class="fas fa-times-circle"></i>
+                                                                        <span>Cancel All Images</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 d-flex align-items-center">
+                                                                <div class="fileupload-process w-100">
+                                                                    <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="table table-striped files" id="previews" hidden>
+                                                            <div id="template" class="row mt-2">
+                                                                <div class="col-auto">
+                                                                    <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                                                </div>
+                                                                <div class="col d-flex align-items-center">
+                                                                    <p class="mb-0">
+                                                                        <span class="lead" data-dz-name></span>
+                                                                        (<span data-dz-size></span>)
+                                                                    </p>
+                                                                    <strong class="error text-danger" data-dz-errormessage></strong>
+                                                                </div>
+                                                                <div class="col-4 d-flex align-items-center">
+                                                                    <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-auto d-flex align-items-center">
+                                                                    <div class="btn-group">
+                                                                        <button class="btn btn-primary start" hidden>
+                                                                            <i class=""></i>
+                                                                            <span>Upload Image</span>
+                                                                        </button>
+                                                                        <button data-dz-remove class="btn btn-danger delete">
+                                                                            <i class="fas fa-trash"></i>
+                                                                            <span>Delete Image</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <span asp-validation-for="Images"></span>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*   <a asp-action="CreateImageeProduct" asp-route-id="@product.Id" class="btn btn-outline-success text-black col-6 col-lg-3 txtFont">Add Images</a>*@
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="ProductColorsidsIds" class="control-label" for="exampleInputProductColors">Product Colors</label>
+                                        <select asp-for="ProductColorsidsIds" class="form-control" id="exampleInputProductColors" style="width:100% !important;">
+                                            <option value="" disabled selected>Selected Color Product</option>
+                                            @foreach (var pc in AllColors)
+                                            {
+                                                <option value="@pc.Id">@pc.Name</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="Name" class="text-danger"></span>
                                     </div>
                                     <div class="form-group">
                                         <input type="submit" value="Save" class="btn btn-primary" />

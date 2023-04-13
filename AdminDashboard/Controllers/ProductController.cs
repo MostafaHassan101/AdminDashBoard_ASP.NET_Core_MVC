@@ -183,8 +183,20 @@ namespace AdminDashboard.Controllers
             [ValidateAntiForgeryToken]
             public async Task<ActionResult> Edit(int id, ProductModel collection)
             {
-                var product = _context.Product.Include("Brand").Include("Category").Single(p => p.Id == id);
-            List<ProductImage> ProductImagess = new List<ProductImage>();
+                var product = _context.Product.Include("Brand")
+                .Include("Category")
+                .Include(c=>c.ProductColors)
+                .Include(p=>p.ProductImages)
+                .Single(p => p.Id == id);
+            if (collection.ProductColorsidsIds != null)
+            {
+                foreach (var colorId in collection.ProductColorsidsIds)
+                {
+                    var color = _context.ProductColors.Single(c => c.Id == colorId);
+                    product.AddColor(color);
+
+                }
+            }
             try
             {
                 foreach (var file in collection.Images)
@@ -210,6 +222,7 @@ namespace AdminDashboard.Controllers
                         ImagePath = imageUrl
                     });
                 }
+                
                 ViewBag.Message = "File uploaded successfully.";
             }
             catch
@@ -218,44 +231,6 @@ namespace AdminDashboard.Controllers
             }
             try
                 {
-                    #region Update file Image
-                    //string fileNameImage = collection.ImagePath.FileName;
-
-                    //fileNameImage = Path.GetFileName(fileNameImage);
-
-                    //string uploadpathImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileNameImage);
-
-                    //var streamoneImage = new FileStream(uploadpathImage, FileMode.Create);
-
-                    //string path = "wwwroot/ProductImages/" + fileNameImage;
-                    //await collection.ImagePath.CopyToAsync(streamoneImage);
-                    //try{
-                    //    foreach (var file in collection.Images)
-                    //    {
-                    //        string fileName = file.FileName;
-
-                    //        fileName = Path.GetFileName(fileName);
-                    //        string uploadpath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/ProductImages/", fileName);
-
-                    //        var stream = new FileStream(uploadpath, FileMode.Create);
-
-                    //        string pathnew = "wwwroot/ProductImages/" + fileName;
-                    //        await file.CopyToAsync(stream);
-                    //        product.AddImage(new ProductImage() { ImagePath = pathnew });
-                    //    }
-                    //    ViewBag.Message = "File uploaded successfully.";
-                    //}
-                    //catch
-
-                    //{
-                    //     ViewBag.Message = "Error while uploading the files.";
-                    //}
-                    //foreach (long c in collection.ProductColorsidsIds)
-                    //{
-                    //    ProductColor productColor = _context.ProductColors.Single(co => co.Id == c);
-                    //    product.AddColor(new ProductColor() { Name = productColor.Name,HexValue=productColor.HexValue });
-                    //}
-                    #endregion
 
                     Category cat = _context.Category.Single(c => c.Id == collection.CategoryId);
                     Brand brand = _context.Brand.Single(b => b.Id == collection.BrandId);
@@ -265,7 +240,7 @@ namespace AdminDashboard.Controllers
                     product.Discount = collection.Discount;
                     product.Description = collection.Description;
                     product.DescriptionAr = collection.DescriptionAr;
-                    product.ProductImages = ProductImagess;
+                    //product.ProductImages = ProductImagess;
                     product.Category = cat;
                     product.Brand = brand;
                     product.Price = collection.Price;
@@ -280,8 +255,6 @@ namespace AdminDashboard.Controllers
                     return View();
                 }
             }
-
-
 
             public async Task<ActionResult> Delete(int id)
             {
@@ -440,6 +413,15 @@ namespace AdminDashboard.Controllers
                     return View();
                 }
             }
-        
+        public ActionResult ProductWishlidst()
+        {
+            var poroducts = _context.Product.Include(p => p.WishLists)
+               .Where(p=>p.WishLists.Count >0) .OrderByDescending(p => p.WishLists.Count)
+                .ToList();
+
+            ViewBag.Products = poroducts;
+            return View();
+
+        }
     }
 }
