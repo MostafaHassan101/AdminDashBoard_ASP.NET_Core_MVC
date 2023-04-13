@@ -96,8 +96,9 @@
                                     </div>
                                     <div class="form-group">
                                         <label asp-for="ImagePath" class="control-label" for="exampleInputImagePath">ImagePath</label>
-                                        <input asp-for="ImagePath" type="file" class="form-control" id="exampleInputImagePath" required />
+                                        <input asp-for="ImagePath"capture type="file" class="form-control" accept="image/*" id="exampleInputImagePath" required />
                                         <span asp-validation-for="ImagePath" class="text-danger"></span>
+                                        
                                     </div>
                                     <div class="form-group">
                                         <label asp-for="Discount" class="control-label" for="exampleInputDiscount">Discount</label>
@@ -162,7 +163,7 @@
                                                     <div class="col-lg-8">
                                                         <div class="btn-group w-100">
                                                             <span class="btn btn-success col-lg-8">
-                                                            <input type="file" asp-for="Images" class="form-control btn btn-success" multiple id="exampleInputImages" style="font-size:larger;" required/>
+                                                                    <input type="file" asp-for="Images" accept="image/*" class="form-control btn btn-success" multiple id="exampleInputImages" style="font-size:larger;" required />
                                                             </span>
                                                             <button type="submit" class="btn btn-primary col start" hidden>
                                                                 <i class="fas fa-upload"></i>
@@ -424,6 +425,22 @@
           // DropzoneJS Demo Code End
     </script>
 
+
+    <script>
+        //get origin image path
+    $(document).ready(function () {
+        // Get the input element by id
+            var fileInput = $('#exampleInputImagePath');
+        // Add a change event listener to the file input
+        fileInput.change(function () {
+            // Get the file path
+            var filePath = fileInput.val();
+
+            // Display the file path in the console
+            console.log('File path:', filePath);
+        });
+    });
+</script>
 
 
 </body>

@@ -1,6 +1,7 @@
 //using AdminDashboard.Data;
 using Context;
 using Domain.Entities;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DbContextConnectionFatmaAhmed") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DbConnectionStringMostafa") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<DContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -45,6 +46,13 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Admin");
     });
 });
+
+//builder.Services.AddSingleton(x => new FirebaseStorageOptions
+//{
+//    AuthTokenAsyncFactory = () => Task.FromResult("noon-ada7a.appspot.com"),
+//    ThrowOnCancel = false,
+//});
+builder.Services.AddDirectoryBrowser();
 
 var app = builder.Build();
 
