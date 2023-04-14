@@ -33,6 +33,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public IActionResult Index(string filter, int PageIndex = 1, int PageSize = 3)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var products = _context.Product.ToList();
             List<Product> filtered = new List<Product>();
 
@@ -56,7 +59,10 @@ namespace AdminDashboard.Controllers
         }
             public ActionResult Create()
             {
-                ViewBag.brands = _context.Brand.ToList();
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
+            ViewBag.brands = _context.Brand.ToList();
                 ViewBag.categories = _context.Category.Where(p => p.ParentCategory != null).ToList();
                 ViewBag.ProductColors = _context.ProductColors.ToList();
                 return View();
@@ -139,6 +145,7 @@ namespace AdminDashboard.Controllers
                     Discount = collection.Discount,
                     Description = collection.Description,
                     DescriptionAr = collection.DescriptionAr,
+                    Sizes = collection.Sizes,
                     Category = cat,
                     Brand = brand,
                     Price = collection.Price,
@@ -148,8 +155,6 @@ namespace AdminDashboard.Controllers
                     ProductImages = ProductImagess,
                     ImagePath = imageUrl,
                     //ImagePath = fileupload.FileName
-
-
                 };
                     await _context.Product.AddAsync(product);
                     await _context.SaveChangesAsync();
@@ -164,7 +169,10 @@ namespace AdminDashboard.Controllers
             // GET: ProductController/Edit/5
             public ActionResult Edit(int id)
             {
-                Product Product = _context.Product
+              string userName = HttpContext.Request.Cookies["UserName"];
+              ViewData["UserName"] = userName;
+
+              Product Product = _context.Product
                     .Include(p => p.Category).Include(a => a.ProductColors)
                     .Include(p => p.Brand).Include(a => a.ProductImages).Single(b => b.Id == id);
 
@@ -183,10 +191,12 @@ namespace AdminDashboard.Controllers
             [ValidateAntiForgeryToken]
             public async Task<ActionResult> Edit(int id, ProductModel collection)
             {
-                var product = _context.Product.Include("Brand")
+            List<ProductImage> ProductImagess = new List<ProductImage>();
+
+            var product = _context.Product.Include("Brand")
                 .Include("Category")
                 .Include(c=>c.ProductColors)
-                .Include(p=>p.ProductImages)
+                //.Include(p=>p.ProductImages)
                 .Single(p => p.Id == id);
             if (collection.ProductColorsidsIds != null)
             {
@@ -199,6 +209,7 @@ namespace AdminDashboard.Controllers
             }
             try
             {
+                if (collection.Images != null) { 
                 foreach (var file in collection.Images)
                 {
                     string imageName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
@@ -222,7 +233,8 @@ namespace AdminDashboard.Controllers
                         ImagePath = imageUrl
                     });
                 }
-                
+                }
+
                 ViewBag.Message = "File uploaded successfully.";
             }
             catch
@@ -240,9 +252,10 @@ namespace AdminDashboard.Controllers
                     product.Discount = collection.Discount;
                     product.Description = collection.Description;
                     product.DescriptionAr = collection.DescriptionAr;
-                    //product.ProductImages = ProductImagess;
+                    product.ProductImages = ProductImagess;
                     product.Category = cat;
-                    product.Brand = brand;
+                    product.Category = cat;
+                    product.Sizes = collection.Sizes;
                     product.Price = collection.Price;
                     product.ModelNumber = collection.ModelNumber;
                     product.Quantity = collection.Quantity;
@@ -275,6 +288,9 @@ namespace AdminDashboard.Controllers
             [HttpGet]
             public IActionResult Details(int id)
             {
+                string userName = HttpContext.Request.Cookies["UserName"];
+                ViewData["UserName"] = userName;
+
                 var prd = _context.Product.Include("ProductColors").Include("ProductImages").Include("ProductReview").Single(p => p.Id == id);
                 ViewBag.Product = prd;
 
@@ -296,7 +312,10 @@ namespace AdminDashboard.Controllers
 
             public ActionResult CreateColorProduct(long id)
             {
-                var prodid = _context.Product.Single(p => p.Id == id);
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
+            var prodid = _context.Product.Single(p => p.Id == id);
                 ViewBag.Product = prodid;
                 ViewBag.ProductColors = _context.ProductColors.ToList();
                 return View();
@@ -413,8 +432,13 @@ namespace AdminDashboard.Controllers
                     return View();
                 }
             }
+
+
         public ActionResult ProductWishlidst()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var poroducts = _context.Product.Include(p => p.WishLists)
                .Where(p=>p.WishLists.Count >0) .OrderByDescending(p => p.WishLists.Count)
                 .ToList();

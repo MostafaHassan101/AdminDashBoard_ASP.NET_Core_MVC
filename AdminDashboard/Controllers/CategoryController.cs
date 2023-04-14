@@ -20,6 +20,9 @@ namespace AdminDashboard.Controllers
 
         public async Task<IActionResult> Index(string filter)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var categories = await _context.Category.Where(c => c.ParentCategory == null).ToListAsync();
             if (filter != null)
             {
@@ -31,6 +34,8 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
 
             var category = await _context.Category
                 .Include(c => c.SubCategories)
@@ -47,6 +52,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
 
@@ -73,6 +81,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             Category category = _context.Category.Single(c => c.Id == id);
             return View(category);
         }
@@ -117,6 +128,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public  IActionResult AddSubCategory(int id)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var parentCategory = _context.Category.Single(c => c.Id == id);
             ViewBag.parentCategory = parentCategory;
             return View();
@@ -127,6 +141,8 @@ namespace AdminDashboard.Controllers
         [ValidateAntiForgeryToken]
         public async Task <IActionResult> AddSubCategory(CategoryModel newCategory)
         {
+
+
             try
             {
                 Category cat = new Category()

@@ -22,6 +22,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public IActionResult Index(string filter)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var Brands = _context.Brand.ToList();
             if (filter != null)
             {
@@ -34,6 +37,9 @@ namespace AdminDashboard.Controllers
         // GET: BrandController/Create
         public IActionResult Create()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
 
@@ -71,6 +77,9 @@ namespace AdminDashboard.Controllers
         // GET: BrandController/Edit/5
         public IActionResult Edit(int id)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName; 
+
             Brand brand = _context.Brand.Single(b => b.Id == id);
             ViewBag.brand = brand;
             return View();
@@ -100,6 +109,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public IActionResult Details(int id)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             ViewBag.Title = "Brand Details";
             List<Product> products = new List<Product>();
             products = _context.Product.Where(Product => Product.Brand.Id == id).ToList();

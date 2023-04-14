@@ -23,10 +23,14 @@ namespace AdminDashboard.Controllers
 
         }
 
-        //public IActionResult _Layout()
-        //{
-        //    return View();
-        //}
+        public IActionResult _Layout()
+        {
+
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
+            return View();
+        }
         public IActionResult Index()
         {
             var User = _context.Users.Count();
@@ -47,131 +51,196 @@ namespace AdminDashboard.Controllers
             var ProductReviews = _context.ProductReviews.Count();
             ViewBag.ProductReviews = ProductReviews;
 
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
         public IActionResult Dashboard2()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
         public IActionResult Dashboard3()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
         public IActionResult Chartjs()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
         public IActionResult Inline()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
 
         public IActionResult General_Elements()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Advanced_Elements()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Validation()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
 
         public IActionResult DataTables()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
 
         public IActionResult jsGrid()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
 
         public IActionResult Calendar()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
 
         public IActionResult Inbox()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
 
         public IActionResult Compose()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
 
         public IActionResult Read()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         
         public IActionResult Invoice()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Invoice_Print()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Profile()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult E_commerce()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Project_Add()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Project_Edit()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Contact_us()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Login()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Register()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Forgot_Password()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Recover_Password()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Lockscreen()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Language_Menu()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Error_404()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
         public IActionResult Simple_Search()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
 
         public IActionResult Enhanced()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
             return View();
         }
 
@@ -179,6 +248,7 @@ namespace AdminDashboard.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

@@ -19,6 +19,9 @@ namespace AdminDashboard.Controllers
         // GET: ProductColorController1
         public ActionResult Index()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var colors=_context.ProductColors.ToList();
             return View(colors);
         }
@@ -27,6 +30,9 @@ namespace AdminDashboard.Controllers
         // GET: ProductColorController1/Create
         public ActionResult Create()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
 
