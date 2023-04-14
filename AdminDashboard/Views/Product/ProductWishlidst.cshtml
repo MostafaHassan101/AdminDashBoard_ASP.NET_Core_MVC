@@ -20,13 +20,12 @@
     <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    @*<link rel="stylesheet" href="~/dist/css/adminlte.min.css">*@
 
     <link rel="stylesheet" href="~/css/FontSizeePage.css" />
 
 </head>
 <body class="hold-transition sidebar-mini">
-
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -50,40 +49,44 @@
                             </div>
                             <div class="card-body">
 
-    <table id="example2" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NameAr)
-            </th>
-            <th>
-                Wishlists Count
-            </th>
-         
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in products)
-        {
-            <tr>
-                <td>
-                    @item.Name
-                </td>
-                <td>
-                    @item.NameAr
-                    </td>
-                <td>
-                   
-                    @item.WishLists.Count
-                </td>
+                                <table id="example2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Name)
+                                            </th>
+                                            <th>
+                                                Product Image
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model.Price)
+                                            </th>
+                                            <th>
+                                                Wishlists Count
+                                            </th>
 
-            </tr>
-        }
-    </tbody>
-</table>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in products)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.Name
+                                                </td>
+                                                <td>
+                                                    <img src="@item.ImagePath" class="card-img-top col-8 m-auto" id="Image-Tag" width="100" height="200" />
+                                                </td>
+                                                 <td>
+                                                    @item.Price
+                                                </td>
+                                                <td>
+                                                    @item.WishLists.Count
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -91,6 +94,7 @@
             </div>
         </section>
     </div>
+
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
@@ -117,7 +121,7 @@
         $(function () {
             $("#example1").DataTable({
                 "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({
                 "paging": true,

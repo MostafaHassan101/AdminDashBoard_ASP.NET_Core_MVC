@@ -26,9 +26,13 @@ namespace AdminDashboard.Controllers
             SignInManager = signInManager;
 
         }
+
+        string UserName;
+
         // GET: UserController/Create Account
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -90,7 +94,10 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public async Task< ActionResult> UsersDetails()
         {
-             List<User> userss = new List<User>();
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
+            List<User> userss = new List<User>();
             var users = context.Users.ToList();
             foreach (var user in users)
             {
@@ -121,6 +128,7 @@ namespace AdminDashboard.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignIn(LoginModel model)
         {
+
             if (ModelState.IsValid == false)
             {
                 return View();
@@ -141,6 +149,14 @@ namespace AdminDashboard.Controllers
                
                     if (User.IsInRole("Admin"))
                     {
+                        var User = context.Users?.SingleOrDefault(u => u.UserName == model.UserName);
+
+                        UserName = User.FirstName;
+
+                        HttpContext.Response.Cookies.Append("UserName", UserName);
+
+
+
                         return RedirectToAction("Index", "Home");
                     }else
                     {
@@ -173,6 +189,9 @@ namespace AdminDashboard.Controllers
         //  UserController/Edit
         public ActionResult Edit(int id)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             return View();
         }
 
@@ -217,6 +236,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public IActionResult AllReviews()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var ProductReviews = context.ProductReviews.Include("Product").ToList();
             ViewBag.ProductReviews = ProductReviews;
 
@@ -226,6 +248,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public IActionResult AllUsers()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var Users = context.Users.ToList();
             ViewBag.Users = Users;
 

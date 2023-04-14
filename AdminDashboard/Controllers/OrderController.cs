@@ -20,6 +20,9 @@ namespace AdminDashboard.Controllers
         // GET: OrderController
         public IActionResult Index()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var orders = _context.Order
                 .Include(o => o.User)
                 .Include(o => o.OrderItems)
@@ -32,6 +35,9 @@ namespace AdminDashboard.Controllers
         [HttpGet]
         public IActionResult PendingOrders()
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var orders = _context.Order.Include(o => o.User)
                 .Include(o => o.OrderItems)
                 .Where(o=>o.Status== "Processing")
@@ -44,6 +50,9 @@ namespace AdminDashboard.Controllers
         // GET: OrderController/Details/5
         public IActionResult Details(long id)
         {
+            string userName = HttpContext.Request.Cookies["UserName"];
+            ViewData["UserName"] = userName;
+
             var orderitems = _context.OrderDetails
                 .Include("Order").Include("Product").Where(o => o.Order.Id == id);
             ViewBag.orderitems = orderitems;
@@ -55,6 +64,7 @@ namespace AdminDashboard.Controllers
        // [HttpPost]
         public async Task<IActionResult>AcceptOrder(long id)
         {
+
             try
             {
                 var order = _context.Order.Single(o => o.Id == id);
